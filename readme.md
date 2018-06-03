@@ -36,7 +36,7 @@ Hồng Ánh - 16521489 - <a href="http://fb.com/honganhtd" target="_blank">fb.co
 
 - **[Laravel 5.5](https://laravel.com/docs/5.5)**
 - **[Bootstrap 3.3](https://getbootstrap.com/docs/3.3/)**
-- **[Some documents and slide of teacher ĐTTT]
+- **[Some documents and slide of teacher ĐTTT](fb.com/vanloctech)**
 - **[Some documents find on Google](https://google.com.vn)**
 
 ## Contributing
