@@ -140,29 +140,6 @@ class BenhNhanController extends Controller
         return view('index.benhnhan.tracuu', compact('dsloaibenh'));
     }
 
-    public function KiemTraPKB(array $arr, $x)
-    {
-        if (count($arr) === 0) return false;
-        $low = 0;
-        $high = count($arr) - 1;
-
-        while ($low <= $high) {
-
-            $mid = floor(($low + $high) / 2);
-
-            if ($arr[$mid] == $x) {
-                return true;
-            }
-            if ($x < $arr[$mid]) {
-                $high = $mid - 1;
-            } else {
-                $low = $mid + 1;
-            }
-        }
-
-        return false;
-    }
-
     public function getAjaxTraCuuBenhNhan(Request $request)
     {
         if ($request->ajax()) {
@@ -201,7 +178,11 @@ class BenhNhanController extends Controller
                     echo "<td>" . date_format(date_create($detail->NgayKham), 'd/m/Y') . "</td>";
                     echo "<td>" . $detail->loaibenh->TenLoaiBenh . "</td>";
                     echo "<td>" . $detail->TrieuChung . "</td>";
-                    echo "<td class='hidden-print'><a href=\"" . route('sua-phieukham.get', [$detail->MaPKB]) . "\"
+                    echo "<td class='hidden-print'>
+                                <a href=\"" . route('them-phieukham.get', [$detail->MaBN]) . "\"
+                                   class=\"btn btn-icon waves-effect waves-light btn-success\" title=\"Thêm phiếu khám bệnh cho bệnh nhân này\"> Thêm PKB</a>
+                                &nbsp;            
+                                <a href=\"" . route('sua-phieukham.get', [$detail->MaPKB]) . "\"
                                    class=\"btn btn-icon waves-effect waves-light btn-warning\" title=\"Sửa\"> <i
                                             class=\"fa fa-wrench\"></i></a>
                                 &nbsp;

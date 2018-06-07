@@ -14,8 +14,8 @@ class BaoCaoSDTController extends Controller
     //
     protected function ThongKeThuoc($t, $n)
     {
-        $thang = $t."/".$n;
-        $thang2 = $n."-".$t;
+        $thang = $t . "/" . $n;
+        $thang2 = $n . "-" . $t;
         $dem_bcsdt = BaoCaoSuDungThuoc::where('ThangNam', $thang)->count();
         if ($dem_bcsdt == 0) //bao cao chua duoc tao
         {
@@ -79,8 +79,7 @@ class BaoCaoSDTController extends Controller
                     $ctbcsdt->SoLuongDung = $soluongdung;
                     $ctbcsdt->SoLanDung = $solandung;
                     $ctbcsdt->save();
-                }
-                else {
+                } else {
                     $ctbcsdt = new ChiTietBCSDT();
                     $ctbcsdt->MaBCSDT = $bcsdt->MaBCSDT;
                     $ctbcsdt->MaThuoc = $thuoc->MaThuoc;
@@ -149,5 +148,23 @@ class BaoCaoSDTController extends Controller
                 }
             }
         }
+    }
+
+    public function getCronjobBaoCaoSDT()
+    {
+        $t = date('m');
+        $n = date('Y');
+        $json = array();
+        $this->ThongKeThuoc($t, $n);
+//        if ($this->ThongKeThuoc($t, $n))
+//        {
+            $json['status'] = "success";
+            return json_encode($json);
+//        }
+//        else {
+//            $json['status'] = "error";
+//            return json_encode($json);
+//        }
+
     }
 }

@@ -87,10 +87,10 @@
                                     Đơn thuốc
                                 </a> &nbsp;&nbsp;
 
-                                <a href="{{route("hd-phieukham.get",[$pk->MaPKB])}}" target="_blank"
-                                   class="btn btn-icon waves-effect waves-light btn-inverse" title="Hóa đơn thanh toán">
-                                    Hóa đơn
-                                </a> &nbsp;&nbsp;
+                                {{--<a href="{{route("hd-phieukham.get",[$pk->MaPKB])}}" target="_blank"--}}
+                                   {{--class="btn btn-icon waves-effect waves-light btn-inverse" title="Hóa đơn thanh toán">--}}
+                                    {{--Hóa đơn--}}
+                                {{--</a> &nbsp;&nbsp;--}}
 
                                 <a href="{{route('sua-phieukham.get',[$pk->MaPKB])}}"
                                    class="btn btn-icon waves-effect waves-light btn-warning" title="Sửa"> <i

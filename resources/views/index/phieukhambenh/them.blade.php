@@ -89,14 +89,25 @@
                                     <select class="selectpicker" data-style="btn-default btn-custom" id="mabn"
                                             name="mabn">
                                         <option value="" selected>--- Chọn bệnh nhân ---</option>
-                                        @foreach($dsbenhnhan as $bn)
-                                            <option value="{{$bn->MaBN}}"
-                                                    @if (old('mabn') == $bn->MaBN) selected @endif>
-                                                {{$bn->HoTen}} &#160;-&#160; @if($bn->GioiTinh == 1)
-                                                    Nữ @elseif($bn->GioiTinh == 2) Nam @else Khác @endif
-                                                &#160;-&#160; {{$bn->NamSinh}} &#160;-&#160; {{$bn->DiaChi}}
-                                            </option>
-                                        @endforeach
+                                        @if ($benhnhan == "")
+                                            @foreach($dsbenhnhan as $bn)
+                                                <option value="{{$bn->MaBN}}"
+                                                        @if (old('mabn') == $bn->MaBN) selected @endif>
+                                                    {{$bn->HoTen}} &#160;-&#160; @if($bn->GioiTinh == 1)
+                                                        Nữ @elseif($bn->GioiTinh == 2) Nam @else Khác @endif
+                                                    &#160;-&#160; {{$bn->NamSinh}} &#160;-&#160; {{$bn->DiaChi}}
+                                                </option>
+                                            @endforeach
+                                        @else
+                                            @foreach($dsbenhnhan as $bn)
+                                                <option value="{{$bn->MaBN}}"
+                                                        @if (old('mabn',$benhnhan) == $bn->MaBN) selected @endif>
+                                                    {{$bn->HoTen}} &#160;-&#160; @if($bn->GioiTinh == 1)
+                                                        Nữ @elseif($bn->GioiTinh == 2) Nam @else Khác @endif
+                                                    &#160;-&#160; {{$bn->NamSinh}} &#160;-&#160; {{$bn->DiaChi}}
+                                                </option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
 

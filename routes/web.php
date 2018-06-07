@@ -102,7 +102,7 @@ Route::group(['prefix' => '/','middleware' => 'adminLogin'], function () {
 //        danh sach
         Route::get('/', 'PhieuKhamController@getDSPhieuKham')->name('ds-phieukham.get');
         //them
-        Route::get('them', 'PhieuKhamController@getThemPhieuKham')->name('them-phieukham.get');
+        Route::get('them/{id?}', 'PhieuKhamController@getThemPhieuKham')->name('them-phieukham.get');
         Route::post('them', 'PhieuKhamController@postThemPhieuKham')->name('them-phieukham.post');
         //sua
         Route::get('sua/{id}', 'PhieuKhamController@getSuaPhieuKham')->name('sua-phieukham.get');
@@ -158,6 +158,8 @@ Route::group(['prefix' => '/','middleware' => 'adminLogin'], function () {
         Route::get('/', 'BaoCaoSDTController@getDSBaoCaoSDT')->name('bcsdt.get');
         //them
         Route::get('ajax', 'BaoCaoSDTController@getAjaxBaoCaoSDT')->name('ajax-bcsdt.get');
+
+        Route::get('cronjob', 'BaoCaoSDTController@getCronjobBaoCaoSDT')->name('cronjob-bcsdt.get');
     });
 
     //Edit user

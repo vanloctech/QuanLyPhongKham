@@ -50,16 +50,16 @@ class PhieuKhamController extends Controller
     public function getXuatExcel($ngay)
     {
         $nameCompany = "Phòng Mạch Tư";
-        $ngayFormat = date_format(date_create($ngay),'d_m_Y');
+        $ngayFormat = date_format(date_create($ngay), 'd_m_Y');
         $dskhambenh = PhieuKhamBenh::where('NgayKham', $ngay)->get();
         if (count($dskhambenh) == 0)
-            return redirect()->route('ds-khambenh.get')->with('error','Không có gì để xuất');
+            return redirect()->route('ds-khambenh.get')->with('error', 'Không có gì để xuất');
         Excel::create('Danh sách khám bệnh ngày ' . $ngayFormat, function ($excel) use ($dskhambenh, $nameCompany, $ngayFormat) {
             $excel->setCreator('Phần mềm quản lý phòng mạch tư')
                 ->setCompany($nameCompany)
                 ->setTitle('Danh sach kham benh')
                 ->setDescription('Đây là danh sách khám bệnh được backup từ hệ thống');
-            $excel->sheet('DSKB_'.$ngayFormat, function ($sheet) use ($dskhambenh) {
+            $excel->sheet('DSKB_' . $ngayFormat, function ($sheet) use ($dskhambenh) {
                 //set font and size
                 $sheet->setStyle(array(
                     'font' => array(
@@ -182,8 +182,9 @@ class PhieuKhamController extends Controller
         }
     }
 
-    public function getThemPhieuKham()
+    public function getThemPhieuKham($id = 0)
     {
+        $benhnhan = BenhNhan::where('MaBN', $id)->count() != 0 ? BenhNhan::find($id)->MaBN : "";
         $sobndakhamtrongngay = PhieuKhamBenh::where('NgayKham', date('Y-m-d'))->count();
         $sobntoida = ThamSo::where('ThamSo', 'SoBenhNhanToiDa')->first()->GiaTri;
         if ($sobndakhamtrongngay - $sobntoida == 0)
@@ -192,7 +193,7 @@ class PhieuKhamController extends Controller
         $dsbenhnhan = BenhNhan::all()->sortByDesc('created_at');
         $dsloaibenh = LoaiBenh::all();
         $dsthuoc = Thuoc::all();
-        return view("index.phieukhambenh.them", compact('dsbenhnhan', 'dsloaibenh', 'dsthuoc', 'sobndakhamtrongngay', 'sobntoida', 'canhbao'));
+        return view("index.phieukhambenh.them", compact('dsbenhnhan', 'dsloaibenh', 'dsthuoc', 'sobndakhamtrongngay', 'sobntoida', 'canhbao','benhnhan'));
     }
 
     public function postThemPhieuKham(Request $request)
