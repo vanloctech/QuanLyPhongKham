@@ -50,6 +50,7 @@
         <div class="col-sm-12">
             <div class="card-box table-responsive">
                 <h4 class="m-t-0 header-title"><b>Báo cáo doanh thu theo ngày</b></h4>
+
                 <div class="form-group date">
                     {{csrf_field()}}
                     <label class="hidden-print">Tháng</label><br>

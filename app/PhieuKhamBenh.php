@@ -27,7 +27,7 @@ class PhieuKhamBenh extends Model
 
     public function loaibenh()
     {
-        return $this->belongsTo('App\LoaiBenh','DuDoanLoaiBenh');
+        return $this->belongsTo('App\LoaiBenh','MaLoaiBenh');
     }
 
     protected static function boot() {

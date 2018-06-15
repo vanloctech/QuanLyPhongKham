@@ -35,6 +35,8 @@ class ThuocController extends Controller
             'tenthuoc.min' => 'Tên thuốc quá ngắn.',
             'tenthuoc.max' => 'Tên thuốc quá dài.',
             'tenthuoc.unique' => 'Tên thuốc đã tồn tại.',
+            'soluongnhap.integer' => 'Số lượng thuốc nhập vào phải là số.',
+            'soluongnhap.min' => 'Số lượng thuốc nhập vào không được âm.',
             'dongia.required' => 'Chưa nhập đơn giá.',
             'dongia.integer' => 'Đơn giá phải là số.',
             'dongia.min' => 'Đơn giá không được âm.',
@@ -45,6 +47,7 @@ class ThuocController extends Controller
         ];
         $rules = [
             'tenthuoc' => 'required|min:5|max:50|unique:thuoc,TenThuoc',
+            'soluongnhap' => 'nullable|integer|min:0',
             'dongia' => 'required|integer|min:0',
             'donvi' => 'required|numeric',
             'cachdung' => 'required|numeric',
@@ -58,6 +61,7 @@ class ThuocController extends Controller
         }
         $Thuoc = new Thuoc();
         $Thuoc->TenThuoc = $request->tenthuoc;
+        $Thuoc->SoLuongConLai = $request->soluongnhap;
         $Thuoc->DonGia = $request->dongia;
         $Thuoc->MaDonVi = $request->donvi;
         $Thuoc->MaCachDung = $request->cachdung;
@@ -96,6 +100,8 @@ class ThuocController extends Controller
                 'tenthuoc.min' => 'Tên thuốc quá ngắn.',
                 'tenthuoc.max' => 'Tên thuốc quá dài.',
                 'tenthuoc.unique' => 'Tên thuốc đã tồn tại.',
+                'soluongnhap.integer' => 'Số lượng thuốc nhập vào phải là số.',
+                'soluongnhap.min' => 'Số lượng thuốc nhập vào không được âm.',
                 'dongia.required' => 'Chưa nhập đơn giá.',
                 'dongia.integer' => 'Đơn giá phải là số.',
                 'dongia.min' => 'Đơn giá không được âm.',
@@ -111,6 +117,7 @@ class ThuocController extends Controller
                     'max:50',
                     Rule::unique('thuoc','TenThuoc')->ignore($id,'MaThuoc')
                     ],
+                'soluongnhap' => 'nullable|integer|min:0',
                 'dongia' => 'required|integer|min:0',
                 'donvi' => 'required|numeric',
                 'cachdung' => 'required|numeric',

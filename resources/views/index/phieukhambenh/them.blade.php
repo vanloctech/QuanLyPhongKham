@@ -170,6 +170,7 @@
                             <tr>
                                 <th class="text-center">STT</th>
                                 <th class="text-center">Thuốc</th>
+                                <th class="text-center">Số lượng còn lại</th>
                                 <th class="text-center">Số lượng</th>
                                 <th class="text-center">Đơn vị</th>
                                 <th class="text-center">Cách dùng</th>
@@ -179,9 +180,16 @@
                             @foreach($dsThuoc as $i => $detail)
                                 <tr>
                                     <td class="text-center">{{$i + 1}}</td>
-                                    <td class="text-center">{{$detail->TenThuoc}}</td>
+                                    <td class="text-center tenthuoc">{{$detail->TenThuoc}}</td>
+                                    <td class="text-center slconlai">
+                                        @if ($detail->SoLuongConLai == 0)
+                                            <b style="color: red">{{$detail->SoLuongConLai}}</b>
+                                        @else
+                                            <b style="color: green">{{$detail->SoLuongConLai}}</b>
+                                        @endif
+                                    </td>
                                     <td class="text-center">
-                                        <input name="{{$detail->MaThuoc}}" type="number" class="form-control"
+                                        <input name="{{$detail->MaThuoc}}" type="number" class="form-control soluong"
                                                placeholder="Số lượng..." maxlength="4"
                                                value="{{old($detail->MaThuoc)}}">
                                     </td>
@@ -216,6 +224,14 @@
 @endsection
 @section('script')
     <script type="text/javascript">
+        // function checkSLConLai() {
+        //     // if (slConLai < slNhap)
+        //     // {
+        //         var tenThuoc = $(this).parent().find("").val();
+        //         alert(tenThuoc)
+        //     // }
+        //         // alert("Thuốc không đủ dùng")
+        // }
         $(document).ready(function () {
             $('#datatable-responsive').DataTable(
                 {
@@ -231,6 +247,16 @@
                     "bFilter": true
                 }
             );
+
+            $(".soluong").on('change', function () {
+                var soLuongNhap = $(this).val();
+                var soLuongConLai = parseInt($(this).parent().parent().find(".slconlai").text());
+                if (soLuongNhap > soLuongConLai) {
+                    var tenThuoc = $(this).parent().parent().find(".tenthuoc").text();
+                    alert("Thuốc " + tenThuoc + " không đủ dùng")
+                    // alert(soLuongConLai)
+                }
+            });
         });
     </script>
 @endsection

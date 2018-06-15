@@ -166,6 +166,17 @@ Route::group(['prefix' => '/','middleware' => 'adminLogin'], function () {
         Route::get('cronjob', 'BaoCaoSDTController@getCronjobBaoCaoSDT')->name('cronjob-bcsdt.get');
     });
 
+    Route::group(['prefix' => 'nhapthuoc'], function () {
+        //danhsach
+        Route::get('/', 'NhapThuocController@getDSPNT')->name('ds-pnt.get');
+        //them
+        Route::get('them', 'NhapThuocController@getThemPNT')->name('them-pnt.get');
+
+        Route::post('them', 'NhapThuocController@postThemPNT')->name('them-pnt.post');
+
+        Route::get('chitiet/{id}', 'NhapThuocController@getChiTietPNT')->name('chitiet-pnt.get');
+    });
+
     //Edit user
     Route::get('hoso', 'UserController@getHoSo')->name('hoso.get');
     Route::post('hoso', 'UserController@postHoSo')->name('hoso.post');

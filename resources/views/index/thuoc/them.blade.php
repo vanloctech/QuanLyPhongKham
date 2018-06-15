@@ -64,6 +64,12 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label class="control-label">Số lượng thuốc nhập vào</label>
+                                    <input name="soluongnhap" type="number" class="form-control" value="{{old('soluongnhap')}}"
+                                           placeholder="Nhập số lượng thuốc nhập vào..." required>
+                                </div>
+
+                                <div class="form-group">
                                     <label class="control-label">Đơn giá (VND)</label>
                                     <input name="dongia" type="number" class="form-control" value="{{old('dongia')}}"
                                            placeholder="Nhập đơn giá..." required>

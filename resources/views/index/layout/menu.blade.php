@@ -48,6 +48,7 @@
                         <li><a href="{{route('ds-thuoc.get')}}"> Quản lý thuốc </a></li>
                         <li><a href="{{route('ds-donvi.get')}}"> Quản lý đơn vị </a></li>
                         <li><a href="{{route('ds-cachdung.get')}}"> Quản lý cách dùng </a></li>
+                        <li><a href="{{route('ds-pnt.get')}}"> Nhập thuốc </a></li>
                     </ul>
                 </li>
 

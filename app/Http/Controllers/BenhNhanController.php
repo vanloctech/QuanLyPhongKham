@@ -161,7 +161,7 @@ class BenhNhanController extends Controller
                 $query->where('HoTen', 'like', '%' . $HoTen . '%');
             })->where('TrieuChung', 'like', '%' . $TrieuChung . '%')
                 ->where('NgayKham', 'like', '%' . $Ngay . '%')
-                ->where('DuDoanLoaiBenh', 'like', '%' . $LoaiBenh . '%')
+                ->where('MaLoaiBenh', 'like', '%' . $LoaiBenh . '%')
                 ->get();
 
             if (count($dsBenhNhan) == 0)

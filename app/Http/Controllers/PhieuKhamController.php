@@ -161,7 +161,7 @@ class PhieuKhamController extends Controller
             $PhieuKham->NgayKham = $request->ngaykham;
             $PhieuKham->MaBN = $request->mabn;
             $PhieuKham->TrieuChung = $request->trieuchung;
-            $PhieuKham->DuDoanLoaiBenh = $request->loaibenh;
+            $PhieuKham->MaLoaiBenh = $request->loaibenh;
             $PhieuKham->save();
 
             $TienKham = ThamSo::where('ThamSo', 'TienKham')->first();
@@ -174,7 +174,7 @@ class PhieuKhamController extends Controller
             foreach ($dsThuoc as $detail) {
                 $idThuoc = $detail->MaThuoc;
                 $SoLuong = $request->$idThuoc;
-                if ($SoLuong > 0) {
+                if ($SoLuong > 0 && $detail->SoLuongConLai >= $SoLuong) {
                     $ctpkb = new ChiTietPKB();
                     $ctpkb->MaPKB = $PhieuKham->MaPKB;
                     $ctpkb->MaThuoc = $detail->MaThuoc;
@@ -183,6 +183,10 @@ class PhieuKhamController extends Controller
                     $ThanhTien = $detail->DonGia * $SoLuong * 1;
                     $ctpkb->ThanhTien = $ThanhTien;
                     $TienThuoc += $ThanhTien;
+
+                    $detail->SoLuongConLai = $detail->SoLuongConLai - $SoLuong;
+                    $detail->save();
+
                     $ctpkb->save();
                 }
             }
@@ -247,7 +251,7 @@ class PhieuKhamController extends Controller
 
             $PhieuKham = PhieuKhamBenh::find($id);
             $PhieuKham->TrieuChung = $request->trieuchung;
-            $PhieuKham->DuDoanLoaiBenh = $request->loaibenh;
+            $PhieuKham->MaLoaiBenh = $request->loaibenh;
             $PhieuKham->save();
 
             $dsCTPKB = ChiTietPKB::where('MaPKB', $PhieuKham->MaPKB)->get();
@@ -256,13 +260,18 @@ class PhieuKhamController extends Controller
 
             $TienThuoc = 0;
             foreach ($dsCTPKB as $detail) {
+                $Thuoc = Thuoc::where("MaThuoc", $detail->MaThuoc)->first();
                 $idThuoc = $detail->MaThuoc;
                 $SoLuong = $request->$idThuoc;
-                if ($SoLuong != 0) {
+                if ($SoLuong > 0 && ($detail->SoLuong + $Thuoc->SoLuongConLai) >= $SoLuong) {
                     $detail->SoLuong = $SoLuong * 1;
                     $ThanhTien = $detail->DonGia * $SoLuong * 1;
                     $detail->ThanhTien = $ThanhTien;
                     $TienThuoc += $ThanhTien;
+
+                    $Thuoc->SoLuongConLai = ($Thuoc->SoLuongConLai + $detail->SoLuong) - $SoLuong;
+                    $Thuoc->save();
+
                     $detail->save();
                 } else {
 //                    $soluong = 0;
@@ -286,7 +295,7 @@ class PhieuKhamController extends Controller
             foreach ($dsThuoc as $detail) {
                 $idThuoc = $detail->MaThuoc;
                 $SoLuong = $request->$idThuoc;
-                if ($SoLuong > 0) {
+                if ($SoLuong > 0 && $detail->SoLuongConLai >= $SoLuong) {
                     $ctpkb = new ChiTietPKB();
                     $ctpkb->MaPKB = $PhieuKham->MaPKB;
                     $ctpkb->MaThuoc = $detail->MaThuoc;
@@ -295,6 +304,10 @@ class PhieuKhamController extends Controller
                     $ThanhTien = $detail->DonGia * $SoLuong * 1;
                     $ctpkb->ThanhTien = $ThanhTien;
                     $TienThuoc += $ThanhTien;
+
+                    $detail->SoLuongConLai = $detail->SoLuongConLai - $SoLuong;
+                    $detail->save();
+
                     $ctpkb->save();
                 }
             }

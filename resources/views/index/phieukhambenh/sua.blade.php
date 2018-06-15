@@ -53,21 +53,21 @@
     <!--end duong dan nho-->
 
     {{--<div class="row">--}}
-        {{--<div class="col-md-12">--}}
-            {{--<div class="form-group">--}}
-                {{--<a href="{{route('them-benhnhan.get')}}">--}}
-                    {{--<button class="ladda-button btn btn-default waves-effect waves-light" data-style="expand-right">--}}
-                        {{--<span class="btn-label"><i class="fa fa-plus"></i></span>Thêm bệnh nhân--}}
-                    {{--</button>--}}
-                {{--</a>--}}
+    {{--<div class="col-md-12">--}}
+    {{--<div class="form-group">--}}
+    {{--<a href="{{route('them-benhnhan.get')}}">--}}
+    {{--<button class="ladda-button btn btn-default waves-effect waves-light" data-style="expand-right">--}}
+    {{--<span class="btn-label"><i class="fa fa-plus"></i></span>Thêm bệnh nhân--}}
+    {{--</button>--}}
+    {{--</a>--}}
 
-                {{--<a href="{{route('them-loaibenh.get')}}">--}}
-                    {{--<button class="ladda-button btn btn-default waves-effect waves-light" data-style="expand-right">--}}
-                        {{--<span class="btn-label"><i class="fa fa-plus"></i></span>Thêm loại bệnh--}}
-                    {{--</button>--}}
-                {{--</a>--}}
-            {{--</div>--}}
-        {{--</div>--}}
+    {{--<a href="{{route('them-loaibenh.get')}}">--}}
+    {{--<button class="ladda-button btn btn-default waves-effect waves-light" data-style="expand-right">--}}
+    {{--<span class="btn-label"><i class="fa fa-plus"></i></span>Thêm loại bệnh--}}
+    {{--</button>--}}
+    {{--</a>--}}
+    {{--</div>--}}
+    {{--</div>--}}
     {{--</div>--}}
 
     <form class="form-horizontal" role="form" action="{{route('sua-phieukham.post',[$PKB->MaPKB])}}"
@@ -146,11 +146,13 @@
                     <h4 class="m-t-0 header-title"><b>Kê đơn thuốc</b></h4>
 
                     <div class="p-10">
-                        <table id="datatable-responsive" class="table table-striped table-bordered m-0" cellspacing="0" width="100%">
+                        <table id="datatable-responsive" class="table table-striped table-bordered m-0" cellspacing="0"
+                               width="100%">
                             <thead>
                             <tr>
                                 <th class="text-center">STT</th>
                                 <th class="text-center">Thuốc</th>
+                                <th class="text-center">Số lượng còn lại</th>
                                 <th class="text-center">Số lượng</th>
                                 <th class="text-center">Đơn vị</th>
                                 <th class="text-center">Cách dùng</th>
@@ -161,10 +163,20 @@
                             @foreach($ctpkb as $detail)
                                 <tr>
                                     <td class="text-center">{{++$i}}</td>
-                                    <td class="text-center">{{$detail->thuoc->TenThuoc}}</td>
+                                    <td class="text-center tenthuoc">{{$detail->thuoc->TenThuoc}}</td>
+                                    <td class="text-center slconlai">
+                                        @if ($detail->thuoc->SoLuongConLai == 0)
+                                            <b style="color: red">{{$detail->thuoc->SoLuongConLai}}</b>
+                                        @else
+                                            <b style="color: green">{{$detail->thuoc->SoLuongConLai}}</b>
+                                        @endif
+                                    </td>
                                     <td class="text-center">
-                                        <input name="{{$detail->thuoc->MaThuoc}}" type="number" class="form-control"
-                                               placeholder="Số lượng..." maxlength="4" value="{{old($detail->thuoc->MaThuoc,$detail->SoLuong)}}">
+                                        <b class="soluongcu hidden">{{$detail->SoLuong}}</b>
+                                        <input name="{{$detail->thuoc->MaThuoc}}" type="number"
+                                               class="form-control soluong"
+                                               placeholder="Số lượng..." maxlength="4"
+                                               value="{{old($detail->thuoc->MaThuoc,$detail->SoLuong)}}">
                                     </td>
                                     <td class="text-center">{{$detail->thuoc->donvi->TenDonVi}}</td>
                                     <td class="text-center">{{$detail->thuoc->cachdung->CachDung}}</td>
@@ -173,10 +185,18 @@
                             @foreach($dsThuoc as $detail)
                                 <tr>
                                     <td class="text-center">{{++$i}}</td>
-                                    <td class="text-center">{{$detail->TenThuoc}}</td>
+                                    <td class="text-center tenthuoc">{{$detail->TenThuoc}}</td>
+                                    <td class="text-center slconlai">
+                                        @if ($detail->SoLuongConLai == 0)
+                                            <b style="color: red">{{$detail->SoLuongConLai}}</b>
+                                        @else
+                                            <b style="color: green">{{$detail->SoLuongConLai}}</b>
+                                        @endif
+                                    </td>
                                     <td class="text-center">
-                                        <input name="{{$detail->MaThuoc}}" type="number" class="form-control"
-                                               placeholder="Số lượng..." maxlength="4" value="{{old($detail->MaThuoc)}}">
+                                        <input name="{{$detail->MaThuoc}}" type="number" class="form-control soluong"
+                                               placeholder="Số lượng..." maxlength="4"
+                                               value="{{old($detail->MaThuoc)}}">
                                     </td>
                                     <td class="text-center">{{$detail->donvi->TenDonVi}}</td>
                                     <td class="text-center">{{$detail->cachdung->CachDung}}</td>
@@ -224,6 +244,26 @@
                     "bFilter": true
                 }
             );
+            $(".soluong").on('change', function () {
+                var soLuongNhap = $(this).val();
+                var soLuongConLai = parseInt($(this).parent().parent().find(".slconlai").text());
+                var soLuongCu = parseInt($(this).parent().find(".soluongcu").text());
+                var tenThuoc = "";
+                if (isNaN(soLuongCu)) {
+                    if (soLuongNhap > soLuongConLai) {
+                        tenThuoc = $(this).parent().parent().find(".tenthuoc").text();
+                        alert("Thuốc " + tenThuoc + " không đủ dùng")
+                        // alert(soLuongConLai)
+                    }
+                }
+                else {
+                    if (soLuongNhap > (soLuongConLai + soLuongCu)) {
+                        tenThuoc = $(this).parent().parent().find(".tenthuoc").text();
+                        alert("Thuốc " + tenThuoc + " không đủ dùng")
+                        // alert(soLuongConLai)
+                    }
+                }
+            });
         });
     </script>
 @endsection
