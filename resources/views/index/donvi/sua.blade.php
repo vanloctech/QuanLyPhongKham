@@ -1,6 +1,6 @@
 @extends('index.layout.index')
 @section('title')
-    <title>Sửa đơn vị {{$donvi->TenDonVi}} - Quản lý phòng mạch tư</title>
+    <title>Sửa đơn vị {{$DonVi->TenDonVi}} - Quản lý phòng mạch tư</title>
 @endsection
 @section('style')
 @endsection
@@ -15,7 +15,7 @@
                     <a href="{{route('ds-donvi.get')}}">Danh sách đơn vị</a>
                 </li>
                 <li class="active">
-                    Sửa đơn vị {{$donvi->TenDonVi}}
+                    Sửa đơn vị {{$DonVi->TenDonVi}}
                 </li>
             </ol>
         </div>
@@ -43,20 +43,20 @@
     <div class="row">
         <div class="col-sm-4">
             <div class="card-box">
-                <h4 class="m-t-0 header-title"><b>Sửa đơn vị {{$donvi->TenDonVi}}</b></h4>
+                <h4 class="m-t-0 header-title"><b>Sửa đơn vị {{$DonVi->TenDonVi}}</b></h4>
                 <p class="text-muted m-b-10 font-13">
                     <b>Bắt buộc</b> <code>Tên đơn vị</code>
                 </p>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="p-l-r-10">
-                            <form class="form-horizontal" role="form" action="{{route('sua-donvi.post',[$donvi->MaDonVi])}}"
+                            <form class="form-horizontal" role="form" action="{{route('sua-donvi.post',[$DonVi->MaDonVi])}}"
                                   method="post">
                                 {{csrf_field()}}
 
                                 <div class="form-group">
                                     <label class="control-label">Tên đơn vị</label>
-                                    <input name="tendonvi" type="text" class="form-control" value="{{old('tendonvi',$donvi->TenDonVi)}}" placeholder="Nhập tên đơn vị..." required>
+                                    <input name="tendonvi" type="text" class="form-control" value="{{old('tendonvi',$DonVi->TenDonVi)}}" placeholder="Nhập tên đơn vị..." required>
                                 </div>
 
                                 <div class="form-group">

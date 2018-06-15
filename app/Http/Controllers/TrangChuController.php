@@ -33,11 +33,13 @@ class TrangChuController extends Controller
         $BCDT = BaoCaoDoanhThu::where('ThangNam', date('m/Y'))->first();
         $CTBCDT = ChiTietBCDT::where('MaBCDT', $BCDT->MaBCDT)->where('Ngay', '<', date('j'))->where('Ngay', '>=', date('j') - 7)->orderBy('Ngay')->get();
         foreach ($CTBCDT as $i => $detail) {
-            $doanhThu[$detail->Ngay] = $detail->DoanhThu;
+            if ($detail->Ngay == NULL)
+                $doanhThu[$detail->Ngay] = 0;
+            else
+                $doanhThu[$detail->Ngay] = $detail->DoanhThu;
         }
-
-        $TopThuocSoLan = ChiTietBCSDT::where('MaBCSDT',2)->orderBy('SoLanDung','DESC')->offset(0)->limit(3)->get();
-        $TopThuocSoLuong = ChiTietBCSDT::where('MaBCSDT',2)->orderBy('SoLuongDung','DESC')->offset(0)->limit(3)->get();
-        return view('index.trangchu.trangchu', compact('user', 'tongBN', 'tongPK', 'tongDT', 'tongTK', 'doanhThu','TopThuocSoLan','TopThuocSoLuong'));
+        $TopThuocSoLan = ChiTietBCSDT::where('MaBCSDT', 2)->orderBy('SoLanDung', 'DESC')->offset(0)->limit(3)->get();
+        $TopThuocSoLuong = ChiTietBCSDT::where('MaBCSDT', 2)->orderBy('SoLuongDung', 'DESC')->offset(0)->limit(3)->get();
+        return view('index.trangchu.trangchu', compact('user', 'tongBN', 'tongPK', 'tongDT', 'tongTK', 'doanhThu', 'TopThuocSoLan', 'TopThuocSoLuong'));
     }
 }

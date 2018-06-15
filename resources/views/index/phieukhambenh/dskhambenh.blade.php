@@ -55,7 +55,8 @@
                     <label>Ngày khám</label><br>
                     <input class="input-small datepicker hasDatepicker" id="ngaykham" type="date" name="ngaykham"
                            onchange="abc(this.value)" value="{{date("Y-m-d")}}">
-                    <button class="ladda-button btn btn-success pull-right hidden-print" data-style="expand-right" onclick="ExportExcel()">
+                    <button class="ladda-button btn btn-success pull-right hidden-print" data-style="expand-right"
+                            onclick="ExportExcel()">
                         <i class="fa fa-file-excel-o"></i> Xuất Excel
                     </button>
                 </div>
@@ -69,25 +70,32 @@
                             <th class="text-center">Giới tính</th>
                             <th class="text-center">Năm sinh</th>
                             <th class="text-center">Địa chỉ</th>
+                            <th class="text-center hidden-print">Đơn thuốc</th>
                         </tr>
                         </thead>
                         <tbody style="text-align: center" id="tbodydskhambenh">
-                        <?php $i = 0; ?>
-                        @foreach($dskhambenh as $bn)
+                        @foreach($dsKhamBenh as $i => $detail)
                             <tr>
-                                <td>{{++$i}}</td>
-                                <td>{{$bn->benhnhan->HoTen}}</td>
+                                <td>{{$i + 1}}</td>
+                                <td>{{$detail->benhnhan->HoTen}}</td>
                                 <td>
-                                    @if ($bn->benhnhan->GioiTinh == 0)
+                                    @if ($detail->benhnhan->GioiTinh == 0)
                                         Nữ
-                                    @elseif($bn->benhnhan->GioiTinh == 1)
+                                    @elseif($detail->benhnhan->GioiTinh == 1)
                                         Nam
                                     @else
                                         Khác
                                     @endif
                                 </td>
-                                <td>{{$bn->benhnhan->NamSinh}}</td>
-                                <td>{{$bn->benhnhan->DiaChi}}</td>
+                                <td>{{$detail->benhnhan->NamSinh}}</td>
+                                <td>{{$detail->benhnhan->DiaChi}}</td>
+                                <td class="hidden-print">
+                                    <a href="{{route("ct-phieukham.get",[$detail->MaPKB])}}" target="_blank"
+                                       class="btn btn-icon waves-effect waves-light btn-success"
+                                       title="Chi tiết đơn thuốc">
+                                        Đơn thuốc
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -119,7 +127,7 @@
                 }
             });
         }
-        
+
         function ExportExcel() {
             var ngay = $('#ngaykham').val();
             window.location.assign("phieukham/xuatexcel/" + ngay);

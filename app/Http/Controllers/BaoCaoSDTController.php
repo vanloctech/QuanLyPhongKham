@@ -14,89 +14,89 @@ class BaoCaoSDTController extends Controller
     //
     protected function ThongKeThuoc($t, $n)
     {
-        $thang = $t . "/" . $n;
-        $thang2 = $n . "-" . $t;
-        $dem_bcsdt = BaoCaoSuDungThuoc::where('ThangNam', $thang)->count();
-        if ($dem_bcsdt == 0) //bao cao chua duoc tao
+        $Thang = $t . "/" . $n;
+        $Thang2 = $n . "-" . $t;
+        $DemBCSDT = BaoCaoSuDungThuoc::where('ThangNam', $Thang)->count();
+        if ($DemBCSDT == 0) //bao cao chua duoc tao
         {
 //          tao bao cao va thong ke
-            $bcsdt = new BaoCaoSuDungThuoc();
-            $bcsdt->ThangNam = $thang;
-            $bcsdt->save();
+            $BCSDT = new BaoCaoSuDungThuoc();
+            $BCSDT->ThangNam = $Thang;
+            $BCSDT->save();
 
-            $pkb = PhieuKhamBenh::where('NgayKham', 'like', $thang2 . '%')->get();
+            $PKB = PhieuKhamBenh::where('NgayKham', 'like', $Thang2 . '%')->get();
 
-            $dsthuoc = Thuoc::all();
-            foreach ($dsthuoc as $thuoc) {
-                $soluongdung = 0;
-                $solandung = 0;
+            $dsThuoc = Thuoc::all();
+            foreach ($dsThuoc as $detail) {
+                $SoLuongDung = 0;
+                $SoLanDung = 0;
 
 //                SQL thay the
 //                SELECT MaThuoc, SUM(chitietphieukham.SoLuong),COUNT(chitietphieukham.MaThuoc) FROM phieukham,chitietphieukham
 //	               WHERE phieukham.NgayKham LIKE '2018-05%'
 //                  AND phieukham.MaPKB = chitietphieukham.MaPKB
 //                  GROUP BY chitietphieukham.MaThuoc
-                foreach ($pkb as $detail) {
-                    $ctpkb = ChiTietPKB::where('MaThuoc', $thuoc->MaThuoc)->where('MaPKB', $detail->MaPKB)->first();
-                    if (isset($ctpkb)) {
-                        $soluongdung += $ctpkb->SoLuong;
-                        $solandung++;
+                foreach ($PKB as $detail1) {
+                    $CTPKB = ChiTietPKB::where('MaThuoc', $detail->MaThuoc)->where('MaPKB', $detail1->MaPKB)->first();
+                    if (isset($CTPKB)) {
+                        $SoLuongDung += $CTPKB->SoLuong;
+                        $SoLanDung++;
                     }
                 }
-                $ctbcsdt = new ChiTietBCSDT();
-                $ctbcsdt->MaBCSDT = $bcsdt->MaBCSDT;
-                $ctbcsdt->MaThuoc = $thuoc->MaThuoc;
-                $ctbcsdt->SoLuongDung = $soluongdung;
-                $ctbcsdt->SoLanDung = $solandung;
-                $ctbcsdt->save();
+                $CTBCSDT = new ChiTietBCSDT();
+                $CTBCSDT->MaBCSDT = $BCSDT->MaBCSDT;
+                $CTBCSDT->MaThuoc = $detail->MaThuoc;
+                $CTBCSDT->SoLuongDung = $SoLuongDung;
+                $CTBCSDT->SoLanDung = $SoLanDung;
+                $CTBCSDT->save();
             }
-        } else //bao cao thang da duoc tao
+        } else //bao cao Thang da duoc tao
         {
             //thong ke lai
-            $bcsdt = BaoCaoSuDungThuoc::where('ThangNam', $thang)->first();
+            $BCSDT = BaoCaoSuDungThuoc::where('ThangNam', $Thang)->first();
 //
-            $pkb = PhieuKhamBenh::where('NgayKham', 'like', $thang2 . '%')->get();
+            $PKB = PhieuKhamBenh::where('NgayKham', 'like', $Thang2 . '%')->get();
 //
-            $dsthuoc = Thuoc::all();
-            foreach ($dsthuoc as $thuoc) {
-                $soluongdung = 0;
-                $solandung = 0;
+            $dsThuoc = Thuoc::all();
+            foreach ($dsThuoc as $detail) {
+                $SoLuongDung = 0;
+                $SoLanDung = 0;
 
 //                SQL thay the
 //                SELECT MaThuoc, SUM(chitietphieukham.SoLuong),COUNT(chitietphieukham.MaThuoc) FROM phieukham,chitietphieukham
 //	               WHERE phieukham.NgayKham LIKE '2018-05%'
 //                  AND phieukham.MaPKB = chitietphieukham.MaPKB
 //                  GROUP BY chitietphieukham.MaThuoc
-                foreach ($pkb as $detail) {
-                    $ctpkb = ChiTietPKB::where('MaThuoc', $thuoc->MaThuoc)->where('MaPKB', $detail->MaPKB)->first();
-                    if (isset($ctpkb)) {
-                        $soluongdung += $ctpkb->SoLuong;
-                        $solandung++;
+                foreach ($PKB as $detail1) {
+                    $CTPKB = ChiTietPKB::where('MaThuoc', $detail->MaThuoc)->where('MaPKB', $detail1->MaPKB)->first();
+                    if (isset($CTPKB)) {
+                        $SoLuongDung += $CTPKB->SoLuong;
+                        $SoLanDung++;
                     }
                 }
-                $ctbcsdt = ChiTietBCSDT::where('MaThuoc', $thuoc->MaThuoc)->where('MaBCSDT', $bcsdt->MaBCSDT)->first();
-                if (isset($ctbcsdt)) {
-                    $ctbcsdt->SoLuongDung = $soluongdung;
-                    $ctbcsdt->SoLanDung = $solandung;
-                    $ctbcsdt->save();
+                $CTBCSDT = ChiTietBCSDT::where('MaThuoc', $detail->MaThuoc)->where('MaBCSDT', $BCSDT->MaBCSDT)->first();
+                if (isset($CTBCSDT)) {
+                    $CTBCSDT->SoLuongDung = $SoLuongDung;
+                    $CTBCSDT->SoLanDung = $SoLanDung;
+                    $CTBCSDT->save();
                 } else {
-                    $ctbcsdt = new ChiTietBCSDT();
-                    $ctbcsdt->MaBCSDT = $bcsdt->MaBCSDT;
-                    $ctbcsdt->MaThuoc = $thuoc->MaThuoc;
-                    $ctbcsdt->SoLuongDung = $soluongdung;
-                    $ctbcsdt->SoLanDung = $solandung;
-                    $ctbcsdt->save();
+                    $CTBCSDT = new ChiTietBCSDT();
+                    $CTBCSDT->MaBCSDT = $BCSDT->MaBCSDT;
+                    $CTBCSDT->MaThuoc = $detail->MaThuoc;
+                    $CTBCSDT->SoLuongDung = $SoLuongDung;
+                    $CTBCSDT->SoLanDung = $SoLanDung;
+                    $CTBCSDT->save();
                 }
             }
         }
     }
 
-    protected function SoSanhThang($t, $n)
+    protected function SoSanhThang($Month, $Year)
     {
-        if ($n > date('Y'))
+        if ($Year > date('Y'))
             return false;
-        elseif ($n == date('Y')) {
-            if ($t > date('m'))
+        elseif ($Year == date('Y')) {
+            if ($Month > date('m'))
                 return false;
             else return true;
         } else return true;
@@ -104,35 +104,35 @@ class BaoCaoSDTController extends Controller
 
     public function getDSBaoCaoSDT()
     {
-        $t = date('m');
-        $n = date('Y');
-        $thang = date('m/Y');
-        $this->ThongKeThuoc($t, $n);
-        $bcsdt = BaoCaoSuDungThuoc::where('ThangNam', $thang)->first();
-        $ctbcsdt = ChiTietBCSDT::where('MaBCSDT', $bcsdt->MaBCSDT)->get();
-        return view('index.baocaosdt.danhsach', compact('ctbcsdt'));
+        $Month = date('m');
+        $Year = date('Y');
+        $MonthYear = date('m/Y');
+        $this->ThongKeThuoc($Month, $Year);
+        $BCSDT = BaoCaoSuDungThuoc::where('ThangNam', $MonthYear)->first();
+        $CTBCSDT = ChiTietBCSDT::where('MaBCSDT', $BCSDT->MaBCSDT)->get();
+        return view('index.baocaosdt.danhsach', compact('CTBCSDT'));
     }
 
     public function getAjaxBaoCaoSDT(Request $request)
     {
         if ($request->ajax()) {
-            $key = $request->key;
-            $key = explode('-', $key);
-            $t = $key[1];
-            $n = $key[0];
-            $thang = $t . "/" . $n;
+            $Key = $request->key;
+            $Key = explode('-', $Key);
+            $Month = $Key[1];
+            $Year = $Key[0];
+            $MonthYear = $Month . "/" . $Year;
             //chon thang lon hon thang hien tai
-            if ($this->SoSanhThang($t, $n) == false) {
+            if ($this->SoSanhThang($Month, $Year) == false) {
                 echo "<tr>";
                 echo "<td colspan='5'>Không có dữ liệu</td>";
                 echo "</tr>";
             } else {
-                $this->ThongKeThuoc($t, $n);
-                $bcsdt = BaoCaoSuDungThuoc::where('ThangNam', $thang)->first();
-                if (isset($bcsdt)) {
-                    $ctbcsdt = ChiTietBCSDT::where('MaBCSDT', $bcsdt->MaBCSDT)->get();
+                $this->ThongKeThuoc($Month, $Year);
+                $BCSDT = BaoCaoSuDungThuoc::where('ThangNam', $MonthYear)->first();
+                if (isset($BCSDT)) {
+                    $CTBCSDT = ChiTietBCSDT::where('MaBCSDT', $BCSDT->MaBCSDT)->get();
                     $i = 0;
-                    foreach ($ctbcsdt as $detail) {
+                    foreach ($CTBCSDT as $detail) {
                         echo "<tr>";
                         echo "<td>" . ++$i . "</td>";
                         echo "<td>" . $detail->thuoc->TenThuoc . "</td>";
@@ -152,10 +152,10 @@ class BaoCaoSDTController extends Controller
 
     public function getCronjobBaoCaoSDT()
     {
-        $t = date('m');
-        $n = date('Y');
+        $Month = date('m');
+        $Year = date('Y');
         $json = array();
-        $this->ThongKeThuoc($t, $n);
+        $this->ThongKeThuoc($Month, $Year);
 //        if ($this->ThongKeThuoc($t, $n))
 //        {
             $json['status'] = "success";

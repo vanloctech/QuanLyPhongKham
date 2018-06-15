@@ -1,6 +1,6 @@
 @extends('index.layout.index')
 @section('title')
-    <title>Hóa đơn thanh toán của bệnh nhân {{$pkb->benhnhan->HoTen}} - Quản lý phòng mạch tư</title>
+    <title>Hóa đơn thanh toán của bệnh nhân {{$PKB->benhnhan->HoTen}} - Quản lý phòng mạch tư</title>
 @endsection
 @section('style')
     <link href="tp_ad/assets/plugins/custombox/css/custombox.css" rel="stylesheet">
@@ -63,8 +63,8 @@
 
                             <div class="pull-left m-t-0">
                                 <address style="font-size: 1.25em">
-                                    <strong>Họ & tên: </strong> {{$pkb->benhnhan->HoTen}} <br>
-                                    <strong style="line-height: 2.5;">Tiền khám: </strong> {{number_format($pkb->hoadon->TienKham)}} VND<br>
+                                    <strong>Họ & tên: </strong> {{$PKB->benhnhan->HoTen}} <br>
+                                    <strong style="line-height: 2.5;">Tiền khám: </strong> {{number_format($PKB->hoadon->TienKham)}} VND<br>
                                 </address>
                             </div>
 
@@ -74,9 +74,9 @@
                             <div class="pull-right m-t-0">
                                 <address style="font-size: 1.25em">
                                     <strong>Ngày
-                                        khám: </strong> {{date_format(date_create($pkb->NgayKham),'d/m/Y')}}
+                                        khám: </strong> {{date_format(date_create($PKB->NgayKham),'d/m/Y')}}
                                     <br/>
-                                    <strong style="line-height: 2.5;">Tiền thuốc: </strong> {{number_format($pkb->hoadon->TienThuoc)}} VND<br>
+                                    <strong style="line-height: 2.5;">Tiền thuốc: </strong> {{number_format($PKB->hoadon->TienThuoc)}} VND<br>
                                 </address>
                             </div>
                         </div>

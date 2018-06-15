@@ -74,9 +74,9 @@
                                     <select class="selectpicker" data-style="btn-default btn-custom" id="donvi"
                                             name="donvi">
                                         <option value="" selected>--- Chọn đơn vị ---</option>
-                                        @foreach($dsdonvi as $dv)
-                                            <option value="{{$dv->MaDonVi}}" @if (old('donvi') == $dv->MaDonVi) selected @endif>
-                                                {{$dv->TenDonVi}}
+                                        @foreach($dsDonVi as $detail)
+                                            <option value="{{$detail->MaDonVi}}" @if (old('donvi') == $detail->MaDonVi) selected @endif>
+                                                {{$detail->TenDonVi}}
                                             </option>
                                         @endforeach
                                     </select>
@@ -87,9 +87,9 @@
                                     <select class="selectpicker" data-style="btn-default btn-custom" id="cachdung"
                                             name="cachdung">
                                         <option value="">--- Chọn cách dùng ---</option>
-                                        @foreach($dscachdung as $cd)
-                                            <option value="{{ $cd->MaCachDung }}" @if (old('cachdung') == $cd->MaCachDung) selected @endif>
-                                                {{ $cd->CachDung }}
+                                        @foreach($dsCachDung as $detail)
+                                            <option value="{{ $detail->MaCachDung }}" @if (old('cachdung') == $detail->MaCachDung) selected @endif>
+                                                {{ $detail->CachDung }}
                                             </option>
                                         @endforeach
                                     </select>

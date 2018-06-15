@@ -1,6 +1,6 @@
 @extends('index.layout.index')
 @section('title')
-    <title>Phiếu khám bệnh của bệnh nhân {{$pkb->benhnhan->HoTen}} - Quản lý phòng mạch tư</title>
+    <title>Phiếu khám bệnh của bệnh nhân {{$PKB->benhnhan->HoTen}} - Quản lý phòng mạch tư</title>
 @endsection
 @section('style')
     <link href="tp_ad/assets/plugins/custombox/css/custombox.css" rel="stylesheet">
@@ -64,8 +64,8 @@
 
                             <div class="pull-left m-t-0">
                                 <address style="font-size: 1.25em">
-                                    <strong>Họ & tên: </strong> {{$pkb->benhnhan->HoTen}} <br>
-                                    <strong style="line-height: 2.5;">Triệu chứng: </strong> {{$pkb->TrieuChung}}<br>
+                                    <strong>Họ & tên: </strong> {{$PKB->benhnhan->HoTen}} <br>
+                                    <strong style="line-height: 2.5;">Triệu chứng: </strong> {{$PKB->TrieuChung}}<br>
                                 </address>
                             </div>
 
@@ -75,10 +75,10 @@
                             <div class="pull-right m-t-0">
                                 <address style="font-size: 1.25em">
                                     <strong>Ngày
-                                        khám: </strong> {{date_format(date_create($pkb->NgayKham),'d/m/Y')}}
+                                        khám: </strong> {{date_format(date_create($PKB->NgayKham),'d/m/Y')}}
                                     <br/>
                                     <strong style="line-height: 2.5;">Dự đoán loại
-                                        bệnh: </strong> {{$pkb->loaibenh->TenLoaiBenh}}<br>
+                                        bệnh: </strong> {{$PKB->loaibenh->TenLoaiBenh}}<br>
                                 </address>
                             </div>
                         </div>
@@ -96,17 +96,21 @@
                                         <th class="text-center">Đơn vị</th>
                                         <th class="text-center">Số lượng</th>
                                         <th class="text-center">Cách dùng</th>
+                                        <th class="text-center">Đơn giá</th>
+                                        <th class="text-center">Thành tiền</th>
                                     </tr>
                                     </thead>
                                     <tbody class="text-center">
                                     <?php $i = 0; ?>
-                                    @foreach($pkb->chitietpkb as $ctpkb)
+                                    @foreach($PKB->chitietpkb as $detail)
                                         <tr>
                                             <td>{{++$i}}</td>
-                                            <td>{{$ctpkb->thuoc->TenThuoc}}</td>
-                                            <td>{{$ctpkb->thuoc->donvi->TenDonVi}}</td>
-                                            <td>{{$ctpkb->SoLuong}}</td>
-                                            <td>{{$ctpkb->thuoc->cachdung->CachDung}}</td>
+                                            <td>{{$detail->thuoc->TenThuoc}}</td>
+                                            <td>{{$detail->thuoc->donvi->TenDonVi}}</td>
+                                            <td>{{$detail->SoLuong}}</td>
+                                            <td>{{$detail->thuoc->cachdung->CachDung}}</td>
+                                            <td>{{number_format($detail->DonGia)}}</td>
+                                            <td>{{number_format($detail->ThanhTien)}}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -118,10 +122,10 @@
                         <div class="col-md-9"></div>
                         <div class="col-md-3 pull-right">
                             <br/>
-                            <p class="text-left"><b>Tiền khám:</b> {{number_format($pkb->hoadon->TienKham)}} VND</p>
-                            <p class="text-left"><b>Tiền thuốc:</b> {{number_format($pkb->hoadon->TienThuoc)}} VND</p>
+                            <p class="text-left"><b>Tiền khám:</b> {{number_format($PKB->hoadon->TienKham)}} VND</p>
+                            <p class="text-left"><b>Tiền thuốc:</b> {{number_format($PKB->hoadon->TienThuoc)}} VND</p>
                             <hr>
-                            <h3 class="text-right">{{number_format($pkb->hoadon->TienThuoc + $pkb->hoadon->TienKham)}} VND</h3>
+                            <h3 class="text-right">{{number_format($PKB->hoadon->TienThuoc + $PKB->hoadon->TienKham)}} VND</h3>
                         </div>
                     </div>
                     <hr>

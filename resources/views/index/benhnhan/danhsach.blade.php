@@ -66,7 +66,7 @@
                        width="100%">
                     <thead>
                     <tr>
-                        {{--<th>#ID</th>--}}
+                        <th>#</th>
                         <th>Họ tên</th>
                         <th>Giới tính</th>
                         <th>Năm sinh</th>
@@ -76,27 +76,28 @@
                     </thead>
 
                     <tbody>
-                    @foreach($dsbenhnhan as $bn)
+                    @foreach($dsBenhNhan as $i => $detail)
                         <tr>
-                            <td>{{$bn->HoTen}}</td>
+                            <td>{{$i+1}}</td>
+                            <td>{{$detail->HoTen}}</td>
                             <td>
-                                @if($bn->GioiTinh == 1)
+                                @if($detail->GioiTinh == 1)
                                     Nữ
-                                @elseif($bn->GioiTinh == 2)
+                                @elseif($detail->GioiTinh == 2)
                                     Nam
                                 @else
                                     Khác
                                 @endif
                             </td>
-                            <td>{{$bn->NamSinh}}</td>
-                            <td>{{$bn->DiaChi}}</td>
+                            <td>{{$detail->NamSinh}}</td>
+                            <td>{{$detail->DiaChi}}</td>
                             <td>
-                                <a href="{{route("sua-benhnhan.get",[$bn->MaBN])}}"
+                                <a href="{{route("sua-benhnhan.get",[$detail->MaBN])}}"
                                    class="btn btn-icon waves-effect waves-light btn-warning" title="Sửa"> <i
                                             class="fa fa-wrench"></i></a>
                                 &nbsp;
                                 &nbsp;
-                                <a onclick="del({{$bn->MaBN}})"
+                                <a onclick="del({{$detail->MaBN}})"
                                    class="btn btn-icon waves-effect waves-light btn-danger" title="Xóa"> <i
                                             class="fa fa-remove"></i></a>
                             </td>
@@ -148,7 +149,7 @@
                         "columnDefs": [
                             {
                                 "className": "text-center",
-                                "targets": [0, 1, 2, 3]
+                                "targets": [0, 1, 2, 3, 4]
                             }
                         ],
 //                        "paging":   false,

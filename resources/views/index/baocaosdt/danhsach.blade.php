@@ -70,8 +70,8 @@
                         </thead>
                         <tbody style="text-align: center" id="tbodydskhambenh">
                         <?php $i = 0; ?>
-                        @if(isset($ctbcsdt))
-                            @foreach($ctbcsdt as $detail)
+                        @if(isset($CTBCSDT))
+                            @foreach($CTBCSDT as $detail)
                                 <tr>
                                     <td>{{++$i}}</td>
                                     <td>{{$detail->thuoc->TenThuoc}}</td>

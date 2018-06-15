@@ -53,12 +53,12 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Số bệnh nhân khám tối đa</label>
-                                    <input name="sobntoida" type="number" class="form-control" value="{{old('sobntoida',$sobntoida->GiaTri)}}" placeholder="Nhập số bệnh nhân tối đa khám trong ngày..." required>
+                                    <input name="sobntoida" type="number" class="form-control" value="{{old('sobntoida',$SoBNToiDa->GiaTri)}}" placeholder="Nhập số bệnh nhân tối đa khám trong ngày..." required>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label">Tiền khám</label>
-                                    <input name="tienkham" type="number" class="form-control" value="{{old('tienkham',$tienkham->GiaTri)}}" placeholder="Nhập tiền khám..." required>
+                                    <input name="tienkham" type="number" class="form-control" value="{{old('tienkham',$TienKham->GiaTri)}}" placeholder="Nhập tiền khám..." required>
                                 </div>
 
                                 <div class="form-group">

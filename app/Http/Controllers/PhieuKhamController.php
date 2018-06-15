@@ -21,27 +21,30 @@ class PhieuKhamController extends Controller
     //
     public function getDSKhamBenh()
     {
-        $dskhambenh = PhieuKhamBenh::where('NgayKham', date('Y-m-d'))->get();
-        return view('index.phieukhambenh.dskhambenh', compact('dskhambenh'));
+        $dsKhamBenh = PhieuKhamBenh::where('NgayKham', date('Y-m-d'))->get();
+        return view('index.phieukhambenh.dskhambenh', compact('dsKhamBenh'));
     }
 
     public function getAjaxDSKhamBenh(Request $request)
     {
         if ($request->ajax()) {
-            $key = $request->key;
-            $dskhambenh = PhieuKhamBenh::where('NgayKham', $key)->get();
+            $Key = $request->key;
+            $dsKhamBenh = PhieuKhamBenh::where('NgayKham', $Key)->get();
             $i = 0;
-            foreach ($dskhambenh as $bn) {
+            foreach ($dsKhamBenh as $detail) {
                 echo "<tr>";
                 echo "<td>" . ++$i . "</td>";
-                echo "<td>" . $bn->benhnhan->HoTen . "</td>";
-                if ($bn->benhnhan->GioiTinh == 1)
+                echo "<td>" . $detail->benhnhan->HoTen . "</td>";
+                if ($detail->benhnhan->GioiTinh == 1)
                     echo "<td>Nữ</td>";
-                elseif ($bn->benhnhan->GioiTinh == 2)
+                elseif ($detail->benhnhan->GioiTinh == 2)
                     echo "<td>Nam</td>";
                 else echo "<td>Khác</td>";
-                echo "<td>" . $bn->benhnhan->NamSinh . "</td>";
-                echo "<td>" . $bn->benhnhan->DiaChi . "</td>";
+                echo "<td>" . $detail->benhnhan->NamSinh . "</td>";
+                echo "<td>" . $detail->benhnhan->DiaChi . "</td>";
+                echo "<td>" . "<a href='" . route('ct-phieukham.get', [$detail->MaPKB]) . "' target='_blank'
+                                   class='btn btn-icon waves-effect waves-light btn-success' title='Chi tiết đơn thuốc'>
+                                    Đơn thuốc</a>" . "</td>";
                 echo "</tr>";
             }
         }
@@ -66,7 +69,8 @@ class PhieuKhamController extends Controller
                         'name' => 'Times New Roman',
                         'size' => 13,
                         'bold' => false
-                    )
+                    ),
+                    'text-align' => 'center'
                 ));
                 $sheet->row(1, array(
                     'Họ & Tên', 'Giới tính', 'Năm sinh', 'Địa chỉ'
@@ -104,108 +108,34 @@ class PhieuKhamController extends Controller
 
     public function getDSPhieuKham()
     {
-        $dsphieukham = PhieuKhamBenh::all()->sortByDesc('created_at');
-        return view('index.phieukhambenh.danhsach', compact('dsphieukham'));
-    }
-
-    protected function ThemBaoCaoDT()
-    {
-        $month = date('m/Y');
-        $day = date('j');
-        $dem_baocaodt = BaoCaoDoanhThu::where('ThangNam', $month)->count();
-        if ($dem_baocaodt == 0) {
-            $baocaodt = new BaoCaoDoanhThu();
-            $baocaodt->ThangNam = $month;
-            $baocaodt->TongDoanhThu = 0;
-            $baocaodt->save();
-            $bcdt = new ChiTietBCDT();
-            $bcdt->MaBCDT = $baocaodt->MaBCDT;
-            $bcdt->Ngay = $day;
-
-            $pkb = PhieuKhamBenh::where('NgayKham', date('Y-m-d'))->get();
-            $sobenhnhan = count($pkb);
-            $doanhthu = 0;
-            foreach ($pkb as $detail) {
-                $hoadon = HoaDon::where('MaPKB', $detail->MaPKB)->first();
-                $doanhthu += ($hoadon->TienKham + $hoadon->TienThuoc);
-            }
-            $bcdt->SoBenhNhan = $sobenhnhan;
-            $bcdt->DoanhThu = $doanhthu;
-            $bcdt->save();
-            $baocaodt->TongDoanhThu = $doanhthu;
-            $baocaodt->save();
-
-        } else {
-            $baocaodt = BaoCaoDoanhThu::where('ThangNam', $month)->first();
-            $dem_ctbcdt = ChiTietBCDT::where('MaBCDT', $baocaodt->MaBCDT)->where('Ngay', $day)->count();
-            if ($dem_ctbcdt == 0) {
-                $bcdt = new ChiTietBCDT();
-                $bcdt->MaBCDT = $baocaodt->MaBCDT;
-                $bcdt->Ngay = $day;
-
-                $pkb = PhieuKhamBenh::where('NgayKham', date('Y-m-d'))->get();
-                $sobenhnhanngay = count($pkb);
-                $doanhthungay = 0;
-                foreach ($pkb as $detail) {
-                    $hoadon = HoaDon::where('MaPKB', $detail->MaPKB)->first();
-                    $doanhthungay += ($hoadon->TienKham + $hoadon->TienThuoc);
-                }
-                $bcdt->SoBenhNhan = $sobenhnhanngay;
-                $bcdt->DoanhThu = $doanhthungay;
-                $bcdt->save();
-
-                $baocaodt->TongDoanhThu = $baocaodt->TongDoanhThu + $doanhthungay;
-                $baocaodt->save();
-            } else {
-                $bcdt = ChiTietBCDT::where('MaBCDT', $baocaodt->MaBCDT)->where('Ngay', $day)->first();
-                $pkb = PhieuKhamBenh::where('NgayKham', date('Y-m-d'))->get();
-                $pkbthang = PhieuKhamBenh::where('NgayKham', 'like', date('Y-m') . '%')->get();
-                $sobenhnhanngay = count($pkb);
-                $doanhthuthang = 0;
-                $doanhthungay = 0;
-                foreach ($pkb as $detail) {
-                    $hoadon = HoaDon::where('MaPKB', $detail->MaPKB)->first();
-                    $doanhthungay += ($hoadon->TienKham + $hoadon->TienThuoc);
-                }
-                foreach ($pkbthang as $detail) {
-                    $hoadon = HoaDon::where('MaPKB', $detail->MaPKB)->first();
-                    $doanhthuthang += ($hoadon->TienKham + $hoadon->TienThuoc);
-                }
-                echo count($pkbthang);
-                $bcdt->SoBenhNhan = $sobenhnhanngay;
-                $bcdt->DoanhThu = $doanhthungay;
-                $bcdt->save();
-
-                $baocaodt->TongDoanhThu = $doanhthuthang;
-                $baocaodt->save();
-            }
-        }
+        $dsPhieuKham = PhieuKhamBenh::all()->sortByDesc('created_at');
+        return view('index.phieukhambenh.danhsach', compact('dsPhieuKham'));
     }
 
     public function getThemPhieuKham($id = 0)
     {
-        $benhnhan = BenhNhan::where('MaBN', $id)->count() != 0 ? BenhNhan::find($id)->MaBN : "";
-        $sobndakhamtrongngay = PhieuKhamBenh::where('NgayKham', date('Y-m-d'))->count();
-        $sobntoida = ThamSo::where('ThamSo', 'SoBenhNhanToiDa')->first()->GiaTri;
-        if ($sobndakhamtrongngay - $sobntoida == 0)
-            $canhbao = 'Không thể thêm phiếu khám bệnh mới do đã khám quá số bệnh nhân tối đa được khám trong ngày.';
-        else $canhbao = "";
-        $dsbenhnhan = BenhNhan::all()->sortByDesc('created_at');
-        $dsloaibenh = LoaiBenh::all();
-        $dsthuoc = Thuoc::all();
-        return view("index.phieukhambenh.them", compact('dsbenhnhan', 'dsloaibenh', 'dsthuoc', 'sobndakhamtrongngay', 'sobntoida', 'canhbao','benhnhan'));
+        $BenhNhan = BenhNhan::where('MaBN', $id)->count() != 0 ? BenhNhan::find($id)->MaBN : "";
+        $SoBNDaKhamTrongNgay = PhieuKhamBenh::where('NgayKham', date('Y-m-d'))->count();
+        $SoBNToiDa = ThamSo::where('ThamSo', 'SoBenhNhanToiDa')->first()->GiaTri;
+        if ($SoBNDaKhamTrongNgay - $SoBNToiDa == 0)
+            $CanhBao = 'Không thể thêm phiếu khám bệnh mới do đã khám quá số bệnh nhân tối đa được khám trong ngày.';
+        else $CanhBao = "";
+        $dsBenhNhan = BenhNhan::all()->sortByDesc('created_at');
+        $dsLoaiBenh = LoaiBenh::all();
+        $dsThuoc = Thuoc::all();
+        return view("index.phieukhambenh.them", compact('dsBenhNhan', 'dsLoaiBenh', 'dsThuoc', 'SoBNDaKhamTrongNgay', 'SoBNToiDa', 'CanhBao', 'BenhNhan'));
     }
 
     public function postThemPhieuKham(Request $request)
     {
         $errors = new MessageBag();
-        $sobndakhamtrongngay = PhieuKhamBenh::where('NgayKham', date('Y-m-d'))->count();
-        $sobntoida = ThamSo::where('ThamSo', 'SoBenhNhanToiDa')->first()->GiaTri;
-        if ($sobndakhamtrongngay >= $sobntoida) {
+        $SoBNDaKhamTrongKham = PhieuKhamBenh::where('NgayKham', date('Y-m-d'))->count();
+        $SoBNToiDa = ThamSo::where('ThamSo', 'SoBenhNhanToiDa')->first()->GiaTri;
+        if ($SoBNDaKhamTrongKham >= $SoBNToiDa) {
             $errors->add('err', 'Không thể thêm phiếu khám bệnh mới do đã khám quá số bệnh nhân tối đa được khám trong ngày.');
             return redirect()->route('them-phieukham.get')->withErrors($errors);
         } else {
-            $dsthuoc = Thuoc::all();
+            $dsThuoc = Thuoc::all();
             $messages = [
                 'mabn.required' => 'Chưa chọn bệnh nhân.',
                 'ngaykham.required' => 'Chưa có ngày khám.',
@@ -227,102 +157,69 @@ class PhieuKhamController extends Controller
                     ->withErrors($errors)
                     ->withInput();
             }
-            $phieukham = new PhieuKhamBenh();
-            $phieukham->NgayKham = $request->ngaykham;
-            $phieukham->MaBN = $request->mabn;
-            $phieukham->TrieuChung = $request->trieuchung;
-            $phieukham->DuDoanLoaiBenh = $request->loaibenh;
-            $phieukham->save();
+            $PhieuKham = new PhieuKhamBenh();
+            $PhieuKham->NgayKham = $request->ngaykham;
+            $PhieuKham->MaBN = $request->mabn;
+            $PhieuKham->TrieuChung = $request->trieuchung;
+            $PhieuKham->DuDoanLoaiBenh = $request->loaibenh;
+            $PhieuKham->save();
 
-            $tienkham = ThamSo::where('ThamSo', 'TienKham')->first();
+            $TienKham = ThamSo::where('ThamSo', 'TienKham')->first();
 
-            $hoadon = new HoaDon();
-            $hoadon->MaPKB = $phieukham->MaPKB;
-            $hoadon->TienKham = $tienkham->GiaTri;
+            $HoaDon = new HoaDon();
+            $HoaDon->MaPKB = $PhieuKham->MaPKB;
+            $HoaDon->TienKham = $TienKham->GiaTri;
 
-            $tienthuoc = 0;
-            foreach ($dsthuoc as $thuoc) {
-                $idthuoc = $thuoc->MaThuoc;
-                $soluong = $request->$idthuoc;
-                if ($soluong != 0) {
+            $TienThuoc = 0;
+            foreach ($dsThuoc as $detail) {
+                $idThuoc = $detail->MaThuoc;
+                $SoLuong = $request->$idThuoc;
+                if ($SoLuong > 0) {
                     $ctpkb = new ChiTietPKB();
-                    $ctpkb->MaPKB = $phieukham->MaPKB;
-                    $ctpkb->MaThuoc = $thuoc->MaThuoc;
-                    $ctpkb->DonGia = $thuoc->DonGia;
-                    $ctpkb->SoLuong = $soluong * 1;
-                    $thanhtien = $thuoc->DonGia * $soluong * 1;
-                    $ctpkb->ThanhTien = $thanhtien;
-                    $tienthuoc += $thanhtien;
+                    $ctpkb->MaPKB = $PhieuKham->MaPKB;
+                    $ctpkb->MaThuoc = $detail->MaThuoc;
+                    $ctpkb->DonGia = $detail->DonGia;
+                    $ctpkb->SoLuong = $SoLuong * 1;
+                    $ThanhTien = $detail->DonGia * $SoLuong * 1;
+                    $ctpkb->ThanhTien = $ThanhTien;
+                    $TienThuoc += $ThanhTien;
                     $ctpkb->save();
                 }
             }
 
-            $hoadon->TienThuoc = $tienthuoc;
-            $hoadon->save();
-            $this->ThemBaoCaoDT();
+            $HoaDon->TienThuoc = $TienThuoc;
+            $HoaDon->save();
+//            $this->ThemBaoCaoDT();
             return redirect()->route('them-phieukham.get')->with('success', 'Thêm phiếu khám bệnh thành công');
         }
-    }
-
-    protected function SuaBaoCaoDT($id)
-    {
-        $phieukb = PhieuKhamBenh::find($id);
-        $ngay = explode('-', $phieukb->NgayKham);
-        $month = $ngay[1] . "/" . $ngay[0];
-        $day = $ngay[2] * 1;
-        $namthang = $ngay[0] . "-" . $ngay[1];
-
-        $baocaodt = BaoCaoDoanhThu::where('ThangNam', $month)->first();
-
-        $bcdt = ChiTietBCDT::where('MaBCDT', $baocaodt->MaBCDT)->where('Ngay', $day)->first();
-        $pkb = PhieuKhamBenh::where('NgayKham', $phieukb->NgayKham)->get();
-        $pkbthang = PhieuKhamBenh::where('NgayKham', 'like', $namthang . '%')->get();
-        $sobenhnhanngay = count($pkb);
-        $doanhthuthang = 0;
-        $doanhthungay = 0;
-        foreach ($pkb as $detail) {
-            $hoadon = HoaDon::where('MaPKB', $detail->MaPKB)->first();
-            $doanhthungay += ($hoadon->TienKham + $hoadon->TienThuoc);
-        }
-        foreach ($pkbthang as $detail) {
-            $hoadon = HoaDon::where('MaPKB', $detail->MaPKB)->first();
-            $doanhthuthang += ($hoadon->TienKham + $hoadon->TienThuoc);
-        }
-        echo count($pkbthang);
-        $bcdt->SoBenhNhan = $sobenhnhanngay;
-        $bcdt->DoanhThu = $doanhthungay;
-        $bcdt->save();
-
-        $baocaodt->TongDoanhThu = $doanhthuthang;
-        $baocaodt->save();
     }
 
     public function getSuaPhieuKham($id)
     {
         $errors = new MessageBag();
-        $dem_pkb = PhieuKhamBenh::where('MaPKB', $id)->count();
-        if ($dem_pkb == 0) {
+        $DemPKB = PhieuKhamBenh::where('MaPKB', $id)->count();
+        if ($DemPKB == 0) {
             $errors->add('err', 'Phiếu khám bệnh không tồn tại.');
             return redirect()->route('ds-phieukham.get')->withErrors($errors);
         } else {
-            $pk = PhieuKhamBenh::find($id);
-            $ctpkb = ChiTietPKB::where('MaPKB', $pk->MaPKB)->get();
-            $arr = array();
-            foreach ($ctpkb as $item => $value) {
-                $arr[$item] = $value->MaThuoc;
+            $PKB = PhieuKhamBenh::find($id);
+            $ctpkb = ChiTietPKB::where('MaPKB', $PKB->MaPKB)->get();
+            $arrThuocLoaiTru = array();
+            foreach ($ctpkb as $i => $detail) {
+                $arrThuocLoaiTru[$i] = $detail->MaThuoc;
             }
-            $dsbenhnhan = BenhNhan::all()->sortByDesc('created_at');
-            $dsloaibenh = LoaiBenh::all();
-            $dsthuoc = Thuoc::whereNotIn('MaThuoc', $arr)->get();
-            return view("index.phieukhambenh.sua", compact('pk', 'dsbenhnhan', 'dsloaibenh', 'dsthuoc', 'ctpkb'));
+            $dsBenhNhan = BenhNhan::all()->sortByDesc('created_at');
+            $dsLoaiBenh = LoaiBenh::all();
+            $dsThuoc = Thuoc::whereNotIn('MaThuoc', $arrThuocLoaiTru)->get();
+            return view("index.phieukhambenh.sua", compact('PKB', 'dsBenhNhan', 'dsLoaiBenh', 'dsThuoc', 'ctpkb'));
         }
     }
 
     public function postSuaPhieuKham(Request $request, $id)
     {
         $errors = new MessageBag();
-        $dem_pkb = PhieuKhamBenh::where('MaPKB', $id)->count();
-        if ($dem_pkb == 0) {
+        $DemPKB = PhieuKhamBenh::where('MaPKB', $id)->count();
+        if ($DemPKB == 0) {
             $errors->add('err', 'Phiếu khám bệnh không tồn tại.');
             return redirect()->route('ds-phieukham.get')->withErrors($errors);
         } else {
@@ -348,63 +245,63 @@ class PhieuKhamController extends Controller
                     ->withInput();
             }
 
-            $phieukham = PhieuKhamBenh::find($id);
-            $phieukham->TrieuChung = $request->trieuchung;
-            $phieukham->DuDoanLoaiBenh = $request->loaibenh;
-            $phieukham->save();
+            $PhieuKham = PhieuKhamBenh::find($id);
+            $PhieuKham->TrieuChung = $request->trieuchung;
+            $PhieuKham->DuDoanLoaiBenh = $request->loaibenh;
+            $PhieuKham->save();
 
-            $dsctpkb = ChiTietPKB::where('MaPKB', $phieukham->MaPKB)->get();
+            $dsCTPKB = ChiTietPKB::where('MaPKB', $PhieuKham->MaPKB)->get();
 
-            $hoadon = HoaDon::where('MaPKB', $id)->first();
+            $HoaDon = HoaDon::where('MaPKB', $id)->first();
 
-            $tienthuoc = 0;
-            foreach ($dsctpkb as $ctpkb) {
-                $idthuoc = $ctpkb->MaThuoc;
-                $soluong = $request->$idthuoc;
-                if ($soluong != 0) {
-                    $ctpkb->SoLuong = $soluong * 1;
-                    $thanhtien = $ctpkb->DonGia * $soluong * 1;
-                    $ctpkb->ThanhTien = $thanhtien;
-                    $tienthuoc += $thanhtien;
-                    $ctpkb->save();
+            $TienThuoc = 0;
+            foreach ($dsCTPKB as $detail) {
+                $idThuoc = $detail->MaThuoc;
+                $SoLuong = $request->$idThuoc;
+                if ($SoLuong != 0) {
+                    $detail->SoLuong = $SoLuong * 1;
+                    $ThanhTien = $detail->DonGia * $SoLuong * 1;
+                    $detail->ThanhTien = $ThanhTien;
+                    $TienThuoc += $ThanhTien;
+                    $detail->save();
                 } else {
 //                    $soluong = 0;
-//                    $ctpkb->SoLuong = $soluong * 1;
-//                    $thanhtien = $ctpkb->DonGia * $soluong * 1;
-//                    $ctpkb->ThanhTien = $thanhtien;
+//                    $detail->SoLuong = $soluong * 1;
+//                    $thanhtien = $detail->DonGia * $soluong * 1;
+//                    $detail->ThanhTien = $thanhtien;
 //                    $tienthuoc += $thanhtien;
-//                    $ctpkb->save();
-                    $ctpkb->delete();
+//                    $detail->save();
+                    $detail->delete();
                 }
             }
 
-            $arr = array();
-            foreach ($dsctpkb as $item => $value) {
-                $arr[$item] = $value->MaThuoc;
+            $arrThuocLoaiTru = array();
+            foreach ($dsCTPKB as $i => $detail) {
+                $arrThuocLoaiTru[$i] = $detail->MaThuoc;
             }
 
             //danh sach thuoc dung sau khi sua
-            $dsthuoc = Thuoc::whereNotIn('MaThuoc', $arr)->get();
+            $dsThuoc = Thuoc::whereNotIn('MaThuoc', $arrThuocLoaiTru)->get();
 
-            foreach ($dsthuoc as $thuoc) {
-                $idthuoc = $thuoc->MaThuoc;
-                $soluong = $request->$idthuoc;
-                if ($soluong != 0) {
+            foreach ($dsThuoc as $detail) {
+                $idThuoc = $detail->MaThuoc;
+                $SoLuong = $request->$idThuoc;
+                if ($SoLuong > 0) {
                     $ctpkb = new ChiTietPKB();
-                    $ctpkb->MaPKB = $phieukham->MaPKB;
-                    $ctpkb->MaThuoc = $thuoc->MaThuoc;
-                    $ctpkb->DonGia = $thuoc->DonGia;
-                    $ctpkb->SoLuong = $soluong * 1;
-                    $thanhtien = $thuoc->DonGia * $soluong * 1;
-                    $ctpkb->ThanhTien = $thanhtien;
-                    $tienthuoc += $thanhtien;
+                    $ctpkb->MaPKB = $PhieuKham->MaPKB;
+                    $ctpkb->MaThuoc = $detail->MaThuoc;
+                    $ctpkb->DonGia = $detail->DonGia;
+                    $ctpkb->SoLuong = $SoLuong * 1;
+                    $ThanhTien = $detail->DonGia * $SoLuong * 1;
+                    $ctpkb->ThanhTien = $ThanhTien;
+                    $TienThuoc += $ThanhTien;
                     $ctpkb->save();
                 }
             }
 
-            $hoadon->TienThuoc = $tienthuoc;
-            $hoadon->save();
-            $this->SuaBaoCaoDT($id);
+            $HoaDon->TienThuoc = $TienThuoc;
+            $HoaDon->save();
+//            $this->SuaBaoCaoDT($id);
             return redirect()->route('sua-phieukham.get', [$id])->with('success', 'Sửa phiếu khám bệnh thành công');
         }
     }
@@ -412,26 +309,26 @@ class PhieuKhamController extends Controller
     public function getXoaPhieuKham($id)
     {
         $errors = new MessageBag();
-        $dem_pkb = PhieuKhamBenh::where('MaPKB', $id)->count();
-        if ($dem_pkb == 0) {
+        $DemPKB = PhieuKhamBenh::where('MaPKB', $id)->count();
+        if ($DemPKB == 0) {
             $errors->add('err', 'Phiếu khám bệnh không tồn tại.');
             return redirect()->route('ds-phieukham.get')->withErrors($errors);
         } else {
-            $pkb = PhieuKhamBenh::find($id);
-            $pkb->delete();
+            $PKB = PhieuKhamBenh::find($id);
+            $PKB->delete();
             return redirect()->route('ds-phieukham.get')->with('success', 'Xóa thành công.');
         }
     }
 
     public function getCTPhieuKham($id)
     {
-        $pkb = PhieuKhamBenh::find($id);
-        return view('index.phieukhambenh.chitiet', compact('pkb'));
+        $PKB = PhieuKhamBenh::find($id);
+        return view('index.phieukhambenh.chitiet', compact('PKB'));
     }
 
     public function getHDPhieuKham($id)
     {
-        $pkb = PhieuKhamBenh::find($id);
-        return view('index.phieukhambenh.hoadon', compact('pkb'));
+        $PKB = PhieuKhamBenh::find($id);
+        return view('index.phieukhambenh.hoadon', compact('PKB'));
     }
 }

@@ -1,6 +1,6 @@
 @extends('index.layout.index')
 @section('title')
-    <title>Sửa cách dùng {{$cachdung->CachDung}} - Quản lý phòng mạch tư</title>
+    <title>Sửa cách dùng {{$CachDung->CachDung}} - Quản lý phòng mạch tư</title>
 @endsection
 @section('style')
 @endsection
@@ -15,7 +15,7 @@
                     <a href="{{route('ds-cachdung.get')}}">Danh sách cách dùng</a>
                 </li>
                 <li class="active">
-                    Sửa cách dùng {{$cachdung->CachDung}}
+                    Sửa cách dùng {{$CachDung->CachDung}}
                 </li>
             </ol>
         </div>
@@ -43,20 +43,20 @@
     <div class="row">
         <div class="col-sm-6">
             <div class="card-box">
-                <h4 class="m-t-0 header-title"><b>Sửa cách dùng {{$cachdung->CachDung}}</b></h4>
+                <h4 class="m-t-0 header-title"><b>Sửa cách dùng {{$CachDung->CachDung}}</b></h4>
                 <p class="text-muted m-b-10 font-13">
                     <b>Bắt buộc</b> <code>Cách dùng</code>
                 </p>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="p-l-r-10">
-                            <form class="form-horizontal" role="form" action="{{route('sua-cachdung.post',[$cachdung->MaCachDung])}}"
+                            <form class="form-horizontal" role="form" action="{{route('sua-cachdung.post',[$CachDung->MaCachDung])}}"
                                   method="post">
                                 {{csrf_field()}}
 
                                 <div class="form-group">
                                     <label class="control-label">Cách dùng</label>
-                                    <input name="cachdung" type="text" class="form-control" value="{{old('cachdung',$cachdung->CachDung)}}" placeholder="Nhập cách dùng...">
+                                    <input name="cachdung" type="text" class="form-control" value="{{old('cachdung',$CachDung->CachDung)}}" placeholder="Nhập cách dùng...">
                                 </div>
 
                                 <div class="form-group">

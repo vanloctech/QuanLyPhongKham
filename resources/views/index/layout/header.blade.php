@@ -24,7 +24,7 @@
                 </div>
 
                 <ul class="nav navbar-nav hidden-xs">
-                    <li><a class="waves-effect waves-light">Số bệnh nhân có thể khám còn lại là: <strong style=" font-size: 1.25em">{{$sobnconlai}}</strong></a></li>
+                    <li><a class="waves-effect waves-light">Số bệnh nhân có thể khám còn lại là: <strong style=" font-size: 1.25em">{{$SoBNConLai}}</strong></a></li>
                     {{--<li><h3 style="font-weight: bold; color: #ff0e10;">{{$sobnconlai}}</h3></li>--}}
                 </ul>
 

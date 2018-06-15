@@ -1,6 +1,6 @@
 @extends('index.layout.index')
 @section('title')
-    <title>Sửa thuốc {{$thuoc->TenThuoc}} - Quản lý phòng mạch tư</title>
+    <title>Sửa thuốc {{$Thuoc->TenThuoc}} - Quản lý phòng mạch tư</title>
 @endsection
 @section('style')
     <link href="assets/plugins/switchery/css/switchery.min.css" rel="stylesheet"/>
@@ -18,7 +18,7 @@
                     <a href="{{route('ds-thuoc.get')}}">Danh sách thuốc</a>
                 </li>
                 <li class="active">
-                    Sửa thuốc {{$thuoc->TenThuoc}}
+                    Sửa thuốc {{$Thuoc->TenThuoc}}
                 </li>
             </ol>
         </div>
@@ -46,7 +46,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card-box">
-                <h4 class="m-t-0 header-title"><b>Sửa thuốc {{$thuoc->TenThuoc}}</b></h4>
+                <h4 class="m-t-0 header-title"><b>Sửa thuốc {{$Thuoc->TenThuoc}}</b></h4>
                 <p class="text-muted m-b-10 font-13">
                     <b>Bắt buộc</b> <code>Tên thuốc</code> <code>Đơn giá</code> <code>Đơn vị</code> <code>Cách
                         dùng</code>
@@ -54,19 +54,19 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="p-l-r-10">
-                            <form class="form-horizontal" role="form" action="{{route('sua-thuoc.post',[$thuoc->MaThuoc])}}"
+                            <form class="form-horizontal" role="form" action="{{route('sua-thuoc.post',[$Thuoc->MaThuoc])}}"
                                   method="post">
                                 {{csrf_field()}}
 
                                 <div class="form-group">
                                     <label class="control-label">Tên thuốc</label>
-                                    <input name="tenthuoc" type="text" class="form-control" value="{{old('tenthuoc',$thuoc->TenThuoc)}}"
+                                    <input name="tenthuoc" type="text" class="form-control" value="{{old('tenthuoc',$Thuoc->TenThuoc)}}"
                                            placeholder="Nhập tên thuốc..." required>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label">Đơn giá (VND)</label>
-                                    <input name="dongia" type="number" class="form-control" value="{{old('dongia',$thuoc->DonGia)}}"
+                                    <input name="dongia" type="number" class="form-control" value="{{old('dongia',$Thuoc->DonGia)}}"
                                            placeholder="Nhập đơn giá..." required>
                                 </div>
 
@@ -75,9 +75,9 @@
                                     <select class="selectpicker" data-style="btn-default btn-custom" id="donvi"
                                             name="donvi">
                                         <option value="" selected>--- Chọn đơn vị ---</option>
-                                        @foreach($dsdonvi as $dv)
-                                            <option value="{{$dv->MaDonVi}}" @if ($dv->MaDonVi == $thuoc->MaDonVi || old('donvi') == $dv->MaDonVi) selected @endif>
-                                                {{$dv->TenDonVi}}
+                                        @foreach($dsDonVi as $detail)
+                                            <option value="{{$detail->MaDonVi}}" @if ($detail->MaDonVi == $Thuoc->MaDonVi || old('donvi') == $detail->MaDonVi) selected @endif>
+                                                {{$detail->TenDonVi}}
                                             </option>
                                         @endforeach
                                     </select>
@@ -88,9 +88,9 @@
                                     <select class="selectpicker" data-style="btn-default btn-custom" id="cachdung"
                                             name="cachdung">
                                         <option value="">--- Chọn cách dùng ---</option>
-                                        @foreach($dscachdung as $cd)
-                                            <option value="{{ $cd->MaCachDung }}" @if ($cd->MaCachDung == $thuoc->MaCachDung || old('cachdung') == $cd->MaCachDung) selected @endif>
-                                                {{ $cd->CachDung }}
+                                        @foreach($dsCachDung as $detail)
+                                            <option value="{{ $detail->MaCachDung }}" @if ($detail->MaCachDung == $Thuoc->MaCachDung || old('cachdung') == $detail->MaCachDung) selected @endif>
+                                                {{ $detail->CachDung }}
                                             </option>
                                         @endforeach
                                     </select>

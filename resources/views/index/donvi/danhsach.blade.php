@@ -61,15 +61,15 @@
                     </thead>
 
                     <tbody>
-                    @foreach($dsdonvi as $donvi)
+                    @foreach($dsDonVi as $detail)
                         <tr>
-                            <td title="{{($donvi->created_at)->format('d/m/Y H:i:s')}}">{{($donvi->created_at)->format('d/m/Y')}}</td>
-                            <td title="{{$donvi->TenDonVi}}">{{$donvi->TenDonVi}}</td>
+                            <td title="{{($detail->created_at)->format('d/m/Y H:i:s')}}">{{($detail->created_at)->format('d/m/Y')}}</td>
+                            <td title="{{$detail->TenDonVi}}">{{$detail->TenDonVi}}</td>
                             <td>
-                                <a href="{{route('sua-donvi.get',$donvi->MaDonVi)}}" class="btn btn-icon waves-effect waves-light btn-warning" title="Sửa"> <i class="fa fa-wrench"></i></a>
+                                <a href="{{route('sua-donvi.get',$detail->MaDonVi)}}" class="btn btn-icon waves-effect waves-light btn-warning" title="Sửa"> <i class="fa fa-wrench"></i></a>
                                 &nbsp;
                                 &nbsp;
-                                <a onclick="del({{$donvi->MaDonVi}})"
+                                <a onclick="del({{$detail->MaDonVi}})"
                                    class="btn btn-icon waves-effect waves-light btn-danger" title="Xóa"> <i
                                             class="fa fa-remove"></i></a>
                             </td>

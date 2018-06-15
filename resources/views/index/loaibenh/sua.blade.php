@@ -1,6 +1,6 @@
 @extends('index.layout.index')
 @section('title')
-    <title>Sửa loại bệnh {{$loaibenh->TenLoaiBenh}} - Quản lý phòng mạch tư</title>
+    <title>Sửa loại bệnh {{$LoaiBenh->TenLoaiBenh}} - Quản lý phòng mạch tư</title>
 @endsection
 @section('style')
 @endsection
@@ -15,7 +15,7 @@
                     <a href="{{route('ds-loaibenh.get')}}">Danh sách loại bệnh</a>
                 </li>
                 <li class="active">
-                    Sửa loại bệnh {{$loaibenh->TenLoaiBenh}}
+                    Sửa loại bệnh {{$LoaiBenh->TenLoaiBenh}}
                 </li>
             </ol>
         </div>
@@ -43,20 +43,20 @@
     <div class="row">
         <div class="col-sm-6">
             <div class="card-box">
-                <h4 class="m-t-0 header-title"><b>Sửa loại bệnh {{$loaibenh->TenLoaiBenh}}</b></h4>
+                <h4 class="m-t-0 header-title"><b>Sửa loại bệnh {{$LoaiBenh->TenLoaiBenh}}</b></h4>
                 <p class="text-muted m-b-10 font-13">
                     <b>Bắt buộc</b> <code>Loại bệnh</code>
                 </p>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="p-l-r-10">
-                            <form class="form-horizontal" role="form" action="{{route('sua-loaibenh.post',[$loaibenh->MaLoaiBenh])}}"
+                            <form class="form-horizontal" role="form" action="{{route('sua-loaibenh.post',[$LoaiBenh->MaLoaiBenh])}}"
                                   method="post">
                                 {{csrf_field()}}
 
                                 <div class="form-group">
                                     <label class="control-label">Tên loại bệnh</label>
-                                    <input name="tenloaibenh" type="text" class="form-control" value="{{old('tenloaibenh',$loaibenh->TenLoaiBenh)}}" placeholder="Nhập tên loại bệnh...">
+                                    <input name="tenloaibenh" type="text" class="form-control" value="{{old('tenloaibenh',$LoaiBenh->TenLoaiBenh)}}" placeholder="Nhập tên loại bệnh...">
                                 </div>
 
                                 <div class="form-group">

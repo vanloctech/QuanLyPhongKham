@@ -66,6 +66,7 @@
                        width="100%">
                     <thead>
                     <tr>
+                        <th>STT</th>
                         <th>Ngày khám</th>
                         <th>Bệnh nhân</th>
                         <th>Triệu chứng</th>
@@ -75,30 +76,42 @@
                     </thead>
 
                     <tbody>
-                    @foreach($dsphieukham as $pk)
+                    <?php $i = 0; ?>
+                    @foreach($dsPhieuKham as $detail)
                         <tr>
-                            <td>{{date_format(date_create($pk->NgayKham),'d/m/Y')}}</td>
-                            <td title="Click vào bệnh nhân để sửa"><a target="_blank" href="{{route('sua-benhnhan.get',[$pk->benhnhan->MaBN])}}">{{$pk->benhnhan->HoTen}}</a></td>
-                            <td>{{$pk->TrieuChung}}</td>
-                            <td>{{$pk->loaibenh->TenLoaiBenh}}</td>
+                            <td>{{++$i}}</td>
+                            <td>{{date_format(date_create($detail->NgayKham),'d/m/Y')}}</td>
+                            <td title="Click vào bệnh nhân để sửa"><a target="_blank"
+                                                                      href="{{route('sua-benhnhan.get',[$detail->benhnhan->MaBN])}}">{{$detail->benhnhan->HoTen}}</a>
+                            </td>
+                            <td>{{$detail->TrieuChung}}</td>
+                            <td>{{$detail->loaibenh->TenLoaiBenh}}</td>
                             <td>
-                                <a href="{{route("ct-phieukham.get",[$pk->MaPKB])}}" target="_blank"
+                                <a href="{{route("ct-phieukham.get",[$detail->MaPKB])}}" target="_blank"
                                    class="btn btn-icon waves-effect waves-light btn-success" title="Chi tiết đơn thuốc">
                                     Đơn thuốc
                                 </a> &nbsp;&nbsp;
 
-                                {{--<a href="{{route("hd-phieukham.get",[$pk->MaPKB])}}" target="_blank"--}}
-                                   {{--class="btn btn-icon waves-effect waves-light btn-inverse" title="Hóa đơn thanh toán">--}}
-                                    {{--Hóa đơn--}}
+                                {{--<a href="{{route("hd-phieukham.get",[$detail->MaPKB])}}" target="_blank"--}}
+                                {{--class="btn btn-icon waves-effect waves-light btn-inverse" title="Hóa đơn thanh toán">--}}
+                                {{--Hóa đơn--}}
                                 {{--</a> &nbsp;&nbsp;--}}
 
-                                <a href="{{route('sua-phieukham.get',[$pk->MaPKB])}}"
-                                   class="btn btn-icon waves-effect waves-light btn-warning" title="Sửa"> <i
+                                <a href="{{route('sua-phieukham.get',[$detail->MaPKB])}}"
+                                   class="btn btn-icon waves-effect waves-light btn-warning
+                                            @if (date('Y-m-d') != $detail->NgayKham)
+                                           disabled
+                                           @endif
+                                           " title="Sửa"> <i
                                             class="fa fa-wrench"></i></a>
                                 &nbsp;
                                 &nbsp;
-                                <a onclick="del({{$pk->MaPKB}})"
-                                   class="btn btn-icon waves-effect waves-light btn-danger" title="Xóa"> <i
+                                <a onclick="del({{$detail->MaPKB}})"
+                                   class="btn btn-icon waves-effect waves-light btn-danger
+                                            @if (date('Y-m-d') != $detail->NgayKham)
+                                           disabled
+@endif
+                                           " title="Xóa"> <i
                                             class="fa fa-remove"></i></a>
                             </td>
                         </tr>
@@ -145,18 +158,18 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#datatable-responsive').DataTable(
-                    {
-                        "columnDefs": [
-                            {
-                                "className": "text-center",
-                                "targets": [0, 1, 2, 3]
-                            }
-                        ],
+                {
+                    "columnDefs": [
+                        {
+                            "className": "text-center",
+                            "targets": [0, 1, 2, 3, 4]
+                        }
+                    ],
 //                        "paging":   false,
-                        "ordering": false,
+                    "ordering": false,
 //                        "info":     false,
-                        "bFilter": false
-                    }
+                    "bFilter": false
+                }
             );
         });
     </script>

@@ -19,14 +19,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        $sobndakhamtrongngay = PhieuKhamBenh::where('NgayKham', date('Y-m-d'))->count();
-        $sobntoida = ThamSo::where('ThamSo', 'SoBenhNhanToiDa')->first()->GiaTri;
-        if ($sobndakhamtrongngay - $sobntoida == 0)
-            $soconlai = 0;
-        else $soconlai = $sobntoida - $sobndakhamtrongngay;
+        $SoBNDaKhamTrongNgay = PhieuKhamBenh::where('NgayKham', date('Y-m-d'))->count();
+        $SoBNToiDa = ThamSo::where('ThamSo', 'SoBenhNhanToiDa')->first()->GiaTri;
+        if ($SoBNDaKhamTrongNgay - $SoBNToiDa == 0)
+            $SoConLai = 0;
+        else $SoConLai = $SoBNToiDa - $SoBNDaKhamTrongNgay;
 
         // Sharing
-        View::share(['sobnconlai' => $soconlai]);
+        View::share(['SoBNConLai' => $SoConLai]);
     }
 
     /**

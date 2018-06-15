@@ -14,8 +14,8 @@ class BenhNhanController extends Controller
     //
     public function getDSBenhNhan()
     {
-        $dsbenhnhan = BenhNhan::all();
-        return view('index.benhnhan.danhsach', compact('dsbenhnhan'));
+        $dsBenhNhan = BenhNhan::all();
+        return view('index.benhnhan.danhsach', compact('dsBenhNhan'));
     }
 
     public function getThemBenhNhan()
@@ -49,33 +49,33 @@ class BenhNhanController extends Controller
                 ->withErrors($errors)
                 ->withInput();
         }
-        $benhnhan = new BenhNhan();
-        $benhnhan->HoTen = $request->hoten;
-        $benhnhan->NamSinh = $request->namsinh;
-        $benhnhan->GioiTinh = $request->gioitinh;
-        $benhnhan->DiaChi = $request->diachi;
-        $benhnhan->save();
+        $BenhNhan = new BenhNhan();
+        $BenhNhan->HoTen = $request->hoten;
+        $BenhNhan->NamSinh = $request->namsinh;
+        $BenhNhan->GioiTinh = $request->gioitinh;
+        $BenhNhan->DiaChi = $request->diachi;
+        $BenhNhan->save();
         return redirect()->route('them-benhnhan.get')->with('success', 'Thêm bệnh nhân thành công.');
     }
 
     public function getSuaBenhNhan($id)
     {
         $errors = new MessageBag();
-        $dem_benhnhan = BenhNhan::where('MaBN', $id)->count();
-        if ($dem_benhnhan == 0) {
+        $DemSoBenhNhan = BenhNhan::where('MaBN', $id)->count();
+        if ($DemSoBenhNhan == 0) {
             $errors->add('err', 'Bệnh nhân không tồn tại.');
             return redirect()->route('ds-benhnhan.get')->withErrors($errors);
         } else {
-            $benhnhan = BenhNhan::find($id);
-            return view('index.benhnhan.sua', compact('benhnhan'));
+            $BenhNhan = BenhNhan::find($id);
+            return view('index.benhnhan.sua', compact('BenhNhan'));
         }
     }
 
     public function postSuaBenhNhan(Request $request, $id)
     {
         $errors = new MessageBag();
-        $dem_benhnhan = BenhNhan::where('MaBN', $id)->count();
-        if ($dem_benhnhan == 0) {
+        $DemSobenhnhan = BenhNhan::where('MaBN', $id)->count();
+        if ($DemSobenhnhan == 0) {
             $errors->add('err', 'Bệnh nhân không tồn tại.');
             return redirect()->route('ds-benhnhan.get')->withErrors($errors);
         } else {
@@ -103,12 +103,12 @@ class BenhNhanController extends Controller
                     ->withErrors($errors)
                     ->withInput();
             }
-            $benhnhan = BenhNhan::find($id);
-            $benhnhan->HoTen = $request->hoten;
-            $benhnhan->NamSinh = $request->namsinh;
-            $benhnhan->GioiTinh = $request->gioitinh;
-            $benhnhan->DiaChi = $request->diachi;
-            $benhnhan->save();
+            $BenhNhan = BenhNhan::find($id);
+            $BenhNhan->HoTen = $request->hoten;
+            $BenhNhan->NamSinh = $request->namsinh;
+            $BenhNhan->GioiTinh = $request->gioitinh;
+            $BenhNhan->DiaChi = $request->diachi;
+            $BenhNhan->save();
             return redirect()->route('sua-benhnhan.get', [$id])->with('success', 'Sửa bệnh nhân thành công.');
         }
     }
@@ -116,18 +116,18 @@ class BenhNhanController extends Controller
     public function getXoaBenhNhan($id)
     {
         $errors = new MessageBag();
-        $dem_benhnhan = BenhNhan::where('MaBN', $id)->count();
-        if ($dem_benhnhan == 0) {
+        $DemSobenhnhan = BenhNhan::where('MaBN', $id)->count();
+        if ($DemSobenhnhan == 0) {
             $errors->add('err', 'Bệnh nhân không tồn tại.');
             return redirect()->route('ds-benhnhan.get')->withErrors($errors);
         } else {
-            $dem_phieukham_dung = PhieuKhamBenh::where('MaBN', $id)->count();
-            if ($dem_phieukham_dung > 0) {
+            $DemSoPKBDaDung = PhieuKhamBenh::where('MaBN', $id)->count();
+            if ($DemSoPKBDaDung > 0) {
                 $errors->add('err', 'Không thể xóa bệnh nhân này.');
                 return redirect()->route('ds-benhnhan.get')->withErrors($errors);
             } else {
-                $benhnhan = BenhNhan::find($id);
-                $benhnhan->delete();
+                $BenhNhan = BenhNhan::find($id);
+                $BenhNhan->delete();
                 return redirect()->route('ds-benhnhan.get')->with('success', 'Xóa thành công.');
             }
         }
@@ -136,32 +136,32 @@ class BenhNhanController extends Controller
 
     public function getTraCuuBenhNhan()
     {
-        $dsloaibenh = LoaiBenh::all();
-        return view('index.benhnhan.tracuu', compact('dsloaibenh'));
+        $dsLoaiBenh = LoaiBenh::all();
+        return view('index.benhnhan.tracuu', compact('dsLoaiBenh'));
     }
 
     public function getAjaxTraCuuBenhNhan(Request $request)
     {
         if ($request->ajax()) {
-            $hoten = "";
-            $ngay = "";
-            $trieuchung = "";
-            $loaibenh = "";
+            $HoTen = "";
+            $Ngay = "";
+            $TrieuChung = "";
+            $LoaiBenh = "";
 
             if ($request->hoten != "")
-                $hoten = $request->hoten;
+                $HoTen = $request->hoten;
             if ($request->ngay != "")
-                $ngay = $request->ngay;
+                $Ngay = $request->ngay;
             if ($request->trieuchung != "")
-                $trieuchung = $request->trieuchung;
+                $TrieuChung = $request->trieuchung;
             if ($request->loaibenh != "")
-                $loaibenh = $request->loaibenh;
+                $LoaiBenh = $request->loaibenh;
 
-            $dsBenhNhan = PhieuKhamBenh::whereHas('benhnhan', function ($query) use ($hoten) {
-                $query->where('HoTen', 'like', '%' . $hoten . '%');
-            })->where('TrieuChung', 'like', '%' . $trieuchung . '%')
-                ->where('NgayKham', 'like', '%' . $ngay . '%')
-                ->where('DuDoanLoaiBenh', 'like', '%' . $loaibenh . '%')
+            $dsBenhNhan = PhieuKhamBenh::whereHas('benhnhan', function ($query) use ($HoTen) {
+                $query->where('HoTen', 'like', '%' . $HoTen . '%');
+            })->where('TrieuChung', 'like', '%' . $TrieuChung . '%')
+                ->where('NgayKham', 'like', '%' . $Ngay . '%')
+                ->where('DuDoanLoaiBenh', 'like', '%' . $LoaiBenh . '%')
                 ->get();
 
             if (count($dsBenhNhan) == 0)
@@ -171,7 +171,7 @@ class BenhNhanController extends Controller
                 sleep(2);
 
                 foreach ($dsBenhNhan as $detail) {
-                    $mang_kiemtra[$i] = $detail->MaPKB;
+//                    $mang_kiemtra[$i] = $detail->MaPKB;
                     echo "<tr>";
                     echo "<td>" . ++$i . "</td>";
                     echo "<td>" . $detail->benhnhan->HoTen . "</td>";

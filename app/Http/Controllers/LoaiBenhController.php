@@ -14,8 +14,8 @@ class LoaiBenhController extends Controller
     //
     public function getDSLoaiBenh()
     {
-        $dsloaibenh = LoaiBenh::all()->sortByDesc('created_at');
-        return view('index.loaibenh.danhsach', compact('dsloaibenh'));
+        $dsLoaiBenh = LoaiBenh::all()->sortByDesc('created_at');
+        return view('index.loaibenh.danhsach', compact('dsLoaiBenh'));
     }
 
     public function getThemLoaiBenh()
@@ -40,36 +40,36 @@ class LoaiBenhController extends Controller
                 ->withErrors($errors)
                 ->withInput();
         }
-        $loaibenh = new LoaiBenh();
-        $loaibenh->TenLoaiBenh = $request->tenloaibenh;
-        $loaibenh->save();
+        $LoaiBenh = new LoaiBenh();
+        $LoaiBenh->TenLoaiBenh = $request->tenloaibenh;
+        $LoaiBenh->save();
         return redirect()->route('ds-loaibenh.get')->with('success','Thêm loại bệnh thành công.');
     }
 
     public function getSuaLoaiBenh($id)
     {
         $errors = new MessageBag();
-        $dem_loaibenh = LoaiBenh::where('MaLoaiBenh', $id)->count();
-        if ($dem_loaibenh < 1) {
+        $DemLoaiBenh = LoaiBenh::where('MaLoaiBenh', $id)->count();
+        if ($DemLoaiBenh < 1) {
             $errors->add('err', 'Loại bệnh này không tồn tại.');
             return redirect()->route('ds-loaibenh.get')->withErrors($errors);
         }
         else {
-            $loaibenh = LoaiBenh::find($id);
-            return view('index.loaibenh.sua', compact('loaibenh'));
+            $LoaiBenh = LoaiBenh::find($id);
+            return view('index.loaibenh.sua', compact('LoaiBenh'));
         }
     }
 
     public function postSuaLoaiBenh(Request $request,$id)
     {
         $errors = new MessageBag();
-        $dem_loaibenh = LoaiBenh::where('MaLoaiBenh', $id)->count();
-        if ($dem_loaibenh < 1) {
+        $DemLoaiBenh = LoaiBenh::where('MaLoaiBenh', $id)->count();
+        if ($DemLoaiBenh < 1) {
             $errors->add('err', 'Loại bệnh này không tồn tại.');
             return redirect()->route('ds-loaibenh.get')->withErrors($errors);
         }
         else {
-            $loaibenh = LoaiBenh::find($id);
+            $LoaiBenh = LoaiBenh::find($id);
             $messages = [
                 'tenloaibenh.required' => 'Chưa nhập loại bệnh.',
                 'tenloaibenh.between' => 'Loại bệnh phải từ :min đến :max kí tự.',
@@ -89,8 +89,8 @@ class LoaiBenhController extends Controller
                     ->withErrors($errors)
                     ->withInput();
             }
-            $loaibenh->TenLoaiBenh = $request->tenloaibenh;
-            $loaibenh->save();
+            $LoaiBenh->TenLoaiBenh = $request->tenloaibenh;
+            $LoaiBenh->save();
             return redirect()->route('sua-loaibenh.get',[$id])->with('success','Sửa loại bệnh thành công.');
         }
     }
@@ -98,19 +98,19 @@ class LoaiBenhController extends Controller
     public function getXoaLoaiBenh($id)
     {
         $errors = new MessageBag();
-        $dem_loaibenh = LoaiBenh::where('MaLoaiBenh', $id)->count();
-        if ($dem_loaibenh == 0) {
+        $DemLoaiBenh = LoaiBenh::where('MaLoaiBenh', $id)->count();
+        if ($DemLoaiBenh == 0) {
             $errors->add('err', 'Loại bệnh này không tồn tại.');
             return redirect()->route('ds-loaibenh.get')->withErrors($errors);
         }
         else {
-            $dem_loaibenh_dung = PhieuKhamBenh::where('DuDoanLoaiBenh',$id)->count();
-            if ($dem_loaibenh_dung != 0) {
+            $DemLoaiBenhDaDung = PhieuKhamBenh::where('DuDoanLoaiBenh',$id)->count();
+            if ($DemLoaiBenhDaDung != 0) {
                 $errors->add('err', 'Không thể xóa loại bệnh này.');
                 return redirect()->route('ds-loaibenh.get')->withErrors($errors);
             }
-            $loaibenh = LoaiBenh::find($id);
-            $loaibenh->delete();
+            $LoaiBenh = LoaiBenh::find($id);
+            $LoaiBenh->delete();
             return redirect()->route('ds-loaibenh.get')->with('success','Xóa thành công.');
         }
     }

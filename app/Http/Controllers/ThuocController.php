@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CachDung;
+use App\ChiTietBCSDT;
 use App\ChiTietPKB;
 use App\DonVi;
 use App\Thuoc;
@@ -16,15 +17,15 @@ class ThuocController extends Controller
     //
     public function getDSThuoc()
     {
-        $dsthuoc = Thuoc::all();
-        return view('index.thuoc.danhsach', compact('dsthuoc'));
+        $dsThuoc = Thuoc::all();
+        return view('index.thuoc.danhsach', compact('dsThuoc'));
     }
 
     public function getThemThuoc()
     {
-        $dsdonvi = DonVi::all();
-        $dscachdung = CachDung::all();
-        return view("index.thuoc.them", compact('dsdonvi','dscachdung'));
+        $dsDonVi = DonVi::all();
+        $dsCachDung = CachDung::all();
+        return view("index.thuoc.them", compact('dsDonVi','dsCachDung'));
     }
 
     public function postThemThuoc(Request $request)
@@ -35,7 +36,8 @@ class ThuocController extends Controller
             'tenthuoc.max' => 'Tên thuốc quá dài.',
             'tenthuoc.unique' => 'Tên thuốc đã tồn tại.',
             'dongia.required' => 'Chưa nhập đơn giá.',
-            'dongia.numeric' => 'Đơn giá phải là số.',
+            'dongia.integer' => 'Đơn giá phải là số.',
+            'dongia.min' => 'Đơn giá không được âm.',
             'donvi.required' => 'Chưa chọn đơn vị.',
             'donvi.numeric' => 'Đơn vị không tồn tại.',
             'cachdung.required' => 'Chưa chọn cách dùng.',
@@ -43,7 +45,7 @@ class ThuocController extends Controller
         ];
         $rules = [
             'tenthuoc' => 'required|min:5|max:50|unique:thuoc,TenThuoc',
-            'dongia' => 'required|numeric',
+            'dongia' => 'required|integer|min:0',
             'donvi' => 'required|numeric',
             'cachdung' => 'required|numeric',
         ];
@@ -54,48 +56,49 @@ class ThuocController extends Controller
                 ->withErrors($errors)
                 ->withInput();
         }
-        $thuoc = new Thuoc();
-        $thuoc->TenThuoc = $request->tenthuoc;
-        $thuoc->DonGia = $request->dongia;
-        $thuoc->MaDonVi = $request->donvi;
-        $thuoc->MaCachDung = $request->cachdung;
-        $thuoc->save();
+        $Thuoc = new Thuoc();
+        $Thuoc->TenThuoc = $request->tenthuoc;
+        $Thuoc->DonGia = $request->dongia;
+        $Thuoc->MaDonVi = $request->donvi;
+        $Thuoc->MaCachDung = $request->cachdung;
+        $Thuoc->save();
         return redirect()->route('them-thuoc.get')->with('success','Thêm thuốc mới thành công.');
     }
 
     public function getSuaThuoc($id)
     {
         $errors = new MessageBag();
-        $dem_thuoc = Thuoc::where('MaThuoc', $id)->count();
-        if ($dem_thuoc == 0) {
+        $DemThuoc = Thuoc::where('MaThuoc', $id)->count();
+        if ($DemThuoc == 0) {
             $errors->add('err', 'Thuốc này không tồn tại.');
             return redirect()->route('ds-thuoc.get')->withErrors($errors);
         }
         else {
-            $dsdonvi = DonVi::all();
-            $dscachdung = CachDung::all();
-            $thuoc = Thuoc::find($id);
-            return view('index.thuoc.sua', compact('dsdonvi','dscachdung','thuoc'));
+            $dsDonVi = DonVi::all();
+            $dsCachDung = CachDung::all();
+            $Thuoc = Thuoc::find($id);
+            return view('index.thuoc.sua', compact('dsDonVi','dsCachDung','Thuoc'));
         }
     }
 
     public function postSuaThuoc(Request $request, $id)
     {
         $errors = new MessageBag();
-        $dem_thuoc = Thuoc::where('MaThuoc', $id)->count();
-        if ($dem_thuoc == 0) {
+        $DemThuoc = Thuoc::where('MaThuoc', $id)->count();
+        if ($DemThuoc == 0) {
             $errors->add('err', 'Thuốc này không tồn tại.');
             return redirect()->route('ds-thuoc.get')->withErrors($errors);
         }
         else {
-            $thuoc = Thuoc::find($id);
+            $Thuoc = Thuoc::find($id);
             $messages = [
                 'tenthuoc.required' => 'Chưa nhập tên thuốc.',
                 'tenthuoc.min' => 'Tên thuốc quá ngắn.',
                 'tenthuoc.max' => 'Tên thuốc quá dài.',
                 'tenthuoc.unique' => 'Tên thuốc đã tồn tại.',
                 'dongia.required' => 'Chưa nhập đơn giá.',
-                'dongia.numeric' => 'Đơn giá phải là số.',
+                'dongia.integer' => 'Đơn giá phải là số.',
+                'dongia.min' => 'Đơn giá không được âm.',
                 'donvi.required' => 'Chưa chọn đơn vị.',
                 'donvi.numeric' => 'Đơn vị không tồn tại.',
                 'cachdung.required' => 'Chưa chọn cách dùng.',
@@ -108,7 +111,7 @@ class ThuocController extends Controller
                     'max:50',
                     Rule::unique('thuoc','TenThuoc')->ignore($id,'MaThuoc')
                     ],
-                'dongia' => 'required|numeric',
+                'dongia' => 'required|integer|min:0',
                 'donvi' => 'required|numeric',
                 'cachdung' => 'required|numeric',
             ];
@@ -119,11 +122,11 @@ class ThuocController extends Controller
                     ->withErrors($errors)
                     ->withInput();
             }
-            $thuoc->TenThuoc = $request->tenthuoc;
-            $thuoc->DonGia = $request->dongia;
-            $thuoc->MaDonVi = $request->donvi;
-            $thuoc->MaCachDung = $request->cachdung;
-            $thuoc->save();
+            $Thuoc->TenThuoc = $request->tenthuoc;
+            $Thuoc->DonGia = $request->dongia;
+            $Thuoc->MaDonVi = $request->donvi;
+            $Thuoc->MaCachDung = $request->cachdung;
+            $Thuoc->save();
             return redirect()->route('sua-thuoc.get',[$id])->with('success','Sửa thuốc thành công.');
         }
     }
@@ -131,19 +134,19 @@ class ThuocController extends Controller
     public function getXoaThuoc($id)
     {
         $errors = new MessageBag();
-        $dem_thuoc = Thuoc::where('MaThuoc', $id)->count();
-        if ($dem_thuoc == 0) {
+        $DemThuoc = Thuoc::where('MaThuoc', $id)->count();
+        if ($DemThuoc == 0) {
             $errors->add('err', 'Thuốc này không tồn tại.');
             return redirect()->route('ds-thuoc.get')->withErrors($errors);
         }
         else {
-            $dem_thuoc_dung = ChiTietPKB::where('MaThuoc',$id)->count();
-            if ($dem_thuoc_dung != 0) {
+            $DemThuocDaDung = ChiTietPKB::where('MaThuoc',$id)->count() + ChiTietBCSDT::where('MaThuoc',$id)->count();
+            if ($DemThuocDaDung != 0) {
                 $errors->add('err', 'Không thể xóa thuốc này.');
                 return redirect()->route('ds-thuoc.get')->withErrors($errors);
             }
-            $thuoc = Thuoc::find($id);
-            $thuoc->delete();
+            $Thuoc = Thuoc::find($id);
+            $Thuoc->delete();
             return redirect()->route('ds-thuoc.get')->with('success','Xóa thành công.');
         }
     }

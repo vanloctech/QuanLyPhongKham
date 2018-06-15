@@ -6,6 +6,14 @@
     <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
     <link href="assets/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet"/>
     <link href="assets/css/cssdate.css" rel="stylesheet" type="text/css">
+    <link href="assets/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/buttons.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/fixedHeader.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/responsive.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/scroller.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/dataTables.colVis.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/fixedColumns.dataTables.min.css" rel="stylesheet" type="text/css"/>
 @endsection
 @section('content')
     <div class="row">
@@ -62,7 +70,7 @@
         {{--</div>--}}
     {{--</div>--}}
 
-    <form class="form-horizontal" role="form" action="{{route('sua-phieukham.post',[$pk->MaPKB])}}"
+    <form class="form-horizontal" role="form" action="{{route('sua-phieukham.post',[$PKB->MaPKB])}}"
           method="post">
         {{csrf_field()}}
         <div class="row">
@@ -82,12 +90,12 @@
                                     <select class="selectpicker" data-style="btn-default btn-custom" id="mabn"
                                             name="mabn" disabled>
                                         <option value="">--- Chọn bệnh nhân ---</option>
-                                        @foreach($dsbenhnhan as $bn)
-                                            <option value="{{$bn->MaBN}}"
-                                                    @if (old('mabn',$pk->MaBN) == $bn->MaBN) selected @endif>
-                                                {{$bn->HoTen}} &#160;-&#160; @if($bn->GioiTinh == 1)
-                                                    Nữ @elseif($bn->GioiTinh == 2) Nam @else Khác @endif
-                                                &#160;-&#160; {{$bn->NamSinh}} &#160;-&#160; {{$bn->DiaChi}}
+                                        @foreach($dsBenhNhan as $detail)
+                                            <option value="{{$detail->MaBN}}"
+                                                    @if (old('mabn',$PKB->MaBN) == $detail->MaBN) selected @endif>
+                                                {{$detail->HoTen}} &#160;-&#160; @if($detail->GioiTinh == 1)
+                                                    Nữ @elseif($detail->GioiTinh == 2) Nam @else Khác @endif
+                                                &#160;-&#160; {{$detail->NamSinh}} &#160;-&#160; {{$detail->DiaChi}}
                                             </option>
                                         @endforeach
                                     </select>
@@ -97,7 +105,7 @@
                                 <div class="form-group">
                                     <label class="control-label">Triệu chứng</label>
                                     <input name="trieuchung" type="text" class="form-control"
-                                           value="{{old('trieuchung',$pk->TrieuChung)}}"
+                                           value="{{old('trieuchung',$PKB->TrieuChung)}}"
                                            placeholder="Nhập triệu chứng..." required>
                                 </div>
 
@@ -109,17 +117,17 @@
                                 <div class="form-group date">
                                     <label>Ngày khám</label><br>
                                     <input class="input-small datepicker hasDatepicker" id="ngaykham" type="date"
-                                           name="ngaykham" value="{{$pk->NgayKham}}" readonly>
+                                           name="ngaykham" value="{{$PKB->NgayKham}}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Chuẩn đoán loại bệnh</label>
                                     <select class="selectpicker" data-style="btn-default btn-custom" id="loaibenh"
                                             name="loaibenh">
                                         <option value="">--- Chọn loại bệnh ---</option>
-                                        @foreach($dsloaibenh as $lb)
-                                            <option value="{{ $lb->MaLoaiBenh }}"
-                                                    @if (old('loaibenh',$pk->DuDoanLoaiBenh) == $lb->MaLoaiBenh) selected @endif>
-                                                {{ $lb->TenLoaiBenh }}
+                                        @foreach($dsLoaiBenh as $detail)
+                                            <option value="{{ $detail->MaLoaiBenh }}"
+                                                    @if (old('loaibenh',$PKB->DuDoanLoaiBenh) == $detail->MaLoaiBenh) selected @endif>
+                                                {{ $detail->TenLoaiBenh }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -138,7 +146,7 @@
                     <h4 class="m-t-0 header-title"><b>Kê đơn thuốc</b></h4>
 
                     <div class="p-10">
-                        <table class="table table-striped table-bordered m-0">
+                        <table id="datatable-responsive" class="table table-striped table-bordered m-0" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th class="text-center">STT</th>
@@ -150,28 +158,28 @@
                             </thead>
                             <tbody style="text-align: center">
                             <?php $i = 0; ?>
-                            @foreach($ctpkb as $ct)
+                            @foreach($ctpkb as $detail)
                                 <tr>
                                     <td class="text-center">{{++$i}}</td>
-                                    <td class="text-center">{{$ct->thuoc->TenThuoc}}</td>
+                                    <td class="text-center">{{$detail->thuoc->TenThuoc}}</td>
                                     <td class="text-center">
-                                        <input name="{{$ct->thuoc->MaThuoc}}" type="number" class="form-control"
-                                               placeholder="Số lượng..." maxlength="4" value="{{old($ct->thuoc->MaThuoc,$ct->SoLuong)}}">
+                                        <input name="{{$detail->thuoc->MaThuoc}}" type="number" class="form-control"
+                                               placeholder="Số lượng..." maxlength="4" value="{{old($detail->thuoc->MaThuoc,$detail->SoLuong)}}">
                                     </td>
-                                    <td class="text-center">{{$ct->thuoc->donvi->TenDonVi}}</td>
-                                    <td class="text-center">{{$ct->thuoc->cachdung->CachDung}}</td>
+                                    <td class="text-center">{{$detail->thuoc->donvi->TenDonVi}}</td>
+                                    <td class="text-center">{{$detail->thuoc->cachdung->CachDung}}</td>
                                 </tr>
                             @endforeach
-                            @foreach($dsthuoc as $thuoc)
+                            @foreach($dsThuoc as $detail)
                                 <tr>
                                     <td class="text-center">{{++$i}}</td>
-                                    <td class="text-center">{{$thuoc->TenThuoc}}</td>
+                                    <td class="text-center">{{$detail->TenThuoc}}</td>
                                     <td class="text-center">
-                                        <input name="{{$thuoc->MaThuoc}}" type="number" class="form-control"
-                                               placeholder="Số lượng..." maxlength="4" value="{{old($thuoc->MaThuoc)}}">
+                                        <input name="{{$detail->MaThuoc}}" type="number" class="form-control"
+                                               placeholder="Số lượng..." maxlength="4" value="{{old($detail->MaThuoc)}}">
                                     </td>
-                                    <td class="text-center">{{$thuoc->donvi->TenDonVi}}</td>
-                                    <td class="text-center">{{$thuoc->cachdung->CachDung}}</td>
+                                    <td class="text-center">{{$detail->donvi->TenDonVi}}</td>
+                                    <td class="text-center">{{$detail->cachdung->CachDung}}</td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -191,6 +199,31 @@
     </form>
 @endsection
 @section('script-ori')
+    <script src="assets/plugins/datatables/dataTables.buttons.min.js"></script>
+    <script src="assets/plugins/datatables/buttons.bootstrap.min.js"></script>
+    <script src="assets/plugins/datatables/jszip.min.js"></script>
+    <script src="assets/plugins/datatables/vfs_fonts.js"></script>
+    <script src="assets/plugins/datatables/buttons.html5.min.js"></script>
+    <script src="assets/plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="assets/plugins/datatables/responsive.bootstrap.min.js"></script>
 @endsection
 @section('script')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datatable-responsive').DataTable(
+                {
+                    "columnDefs": [
+                        {
+                            "className": "text-center",
+                            "targets": [0, 1, 2, 3, 4]
+                        }
+                    ],
+//                        "paging":   false,
+                    "ordering": false,
+//                        "info":     false,
+                    "bFilter": true
+                }
+            );
+        });
+    </script>
 @endsection

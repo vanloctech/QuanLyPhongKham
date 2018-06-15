@@ -34,6 +34,7 @@
                     <a href="javascript:void(0);" class="waves-effect"><i class="ti-view-list"></i>
                         <span> Báo cáo </span> <span class="menu-arrow"></span> </a>
                     <ul class="list-unstyled">
+                        <li><a href="{{route('cronjobthem-bcdt.get')}}"> Lập báo cáo doanh thu </a></li>
                         <li><a href="{{route('bcdt.get')}}"> Báo cáo doanh thu </a></li>
                         <li><a href="{{route('bcsdt.get')}}"> Báo cáo sử dụng thuốc </a></li>
                     </ul>

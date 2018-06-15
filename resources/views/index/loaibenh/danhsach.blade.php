@@ -53,7 +53,7 @@
                        width="100%">
                     <thead>
                     <tr>
-                        {{--<th>#ID</th>--}}
+                        <th>#</th>
                         <th>Ngày thêm</th>
                         <th>Loại bệnh</th>
                         <th>Hành động</th>
@@ -61,15 +61,16 @@
                     </thead>
 
                     <tbody>
-                    @foreach($dsloaibenh as $loaibenh)
+                    @foreach($dsLoaiBenh as $i => $detail)
                         <tr>
-                            <td title="{{($loaibenh->created_at)->format('d/m/Y H:i:s')}}">{{($loaibenh->created_at)->format('d/m/Y')}}</td>
-                            <td title="{{$loaibenh->TenLoaiBenh}}">{{$loaibenh->TenLoaiBenh}}</td>
+                            <td>{{$i + 1}}</td>
+                            <td title="{{($detail->created_at)->format('d/m/Y H:i:s')}}">{{($detail->created_at)->format('d/m/Y')}}</td>
+                            <td title="{{$detail->TenLoaiBenh}}">{{$detail->TenLoaiBenh}}</td>
                             <td>
-                                <a href="{{route('sua-loaibenh.get',$loaibenh->MaLoaiBenh)}}" class="btn btn-icon waves-effect waves-light btn-warning" title="Sửa"> <i class="fa fa-wrench"></i></a>
+                                <a href="{{route('sua-loaibenh.get',$detail->MaLoaiBenh)}}" class="btn btn-icon waves-effect waves-light btn-warning" title="Sửa"> <i class="fa fa-wrench"></i></a>
                                 &nbsp;
                                 &nbsp;
-                                <a onclick="del({{$loaibenh->MaLoaiBenh}})"
+                                <a onclick="del({{$detail->MaLoaiBenh}})"
                                    class="btn btn-icon waves-effect waves-light btn-danger" title="Xóa"> <i
                                             class="fa fa-remove"></i></a>
                             </td>

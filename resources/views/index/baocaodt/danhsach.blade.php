@@ -70,11 +70,11 @@
                         </thead>
                         <tbody style="text-align: center" id="tbodydskhambenh">
                         <?php $i = 0; ?>
-                        @if(isset($ctbcdt))
-                        @foreach($ctbcdt as $detail)
+                        @if(isset($CTBCDT))
+                        @foreach($CTBCDT as $detail)
                             <tr>
                                 <td>{{++$i}}</td>
-                                <td>{{$detail->Ngay}}/{{$detail->baocaodoanhthu->ThangNam}}</td>
+                                <td>{{$detail->Ngay<10?"0".$detail->Ngay:$detail->Ngay}}/{{$detail->baocaodoanhthu->ThangNam}}</td>
                                 <td>{{$detail->SoBenhNhan}}</td>
                                 <td>{{number_format($detail->DoanhThu)}} VND</td>
                                 <td>{{round(($detail->DoanhThu/$detail->baocaodoanhthu->TongDoanhThu)*100,2)}}%</td>

@@ -12,22 +12,24 @@ class QuyDinhController extends Controller
     //
     public function getQuyDinh()
     {
-        $sobntoida = ThamSo::where('ThamSo','SoBenhNhanToiDa')->first();
-        $tienkham = ThamSo::where('ThamSo','TienKham')->first();
-        return view('index.quydinh.quydinh',compact('sobntoida','tienkham'));
+        $SoBNToiDa = ThamSo::where('ThamSo','SoBenhNhanToiDa')->first();
+        $TienKham = ThamSo::where('ThamSo','TienKham')->first();
+        return view('index.quydinh.quydinh',compact('SoBNToiDa','TienKham'));
     }
 
     public function postQuyDinh(Request $request)
     {
         $messages = [
             'sobntoida.required' => 'Chưa nhập số bệnh nhân tối đa.',
-            'sobntoida.numeric' => 'Số bệnh nhân phải là số',
+            'sobntoida.integer' => 'Số bệnh nhân phải là số',
+            'sobntoida.min' => 'Số bệnh nhân tối đa không được âm',
             'tienkham.require' => 'Chưa nhập tiền khám.',
-            'tienkham.numeric' => 'Tiền khám phải là số.',
+            'tienkham.integer' => 'Tiền khám phải là số.',
+            'tienkham.min' => 'Tiền khám không được âm.',
         ];
         $rules = [
-            'sobntoida' => 'required|numeric',
-            'tienkham' => 'required|numeric'
+            'sobntoida' => 'required|integer|min:0',
+            'tienkham' => 'required|integer|min:0'
         ];
         $errors = Validator::make($request->all(), $rules, $messages);
         if ($errors->fails()) {
@@ -36,26 +38,27 @@ class QuyDinhController extends Controller
                 ->withErrors($errors)
                 ->withInput();
         }
-        $sobntoida = ThamSo::where('ThamSo','SoBenhNhanToiDa')->first();
-        $tienkham = ThamSo::where('ThamSo','TienKham')->first();
+        $SoBNToiDa = ThamSo::where('ThamSo','SoBenhNhanToiDa')->first();
+        $TienKham = ThamSo::where('ThamSo','TienKham')->first();
 
-        $sobntoida->GiaTri = $request->sobntoida;
-        $tienkham->GiaTri = $request->tienkham;
+        $SoBNToiDa->GiaTri = $request->sobntoida;
+        $TienKham->GiaTri = $request->tienkham;
 
-        $sobntoida->save();
-        $tienkham->save();
+        $SoBNToiDa->save();
+        $TienKham->save();
 
         return redirect()->route('quydinh.get')->with('success','Sửa quy định thành công');
 
     }
 
+    //thong tin phong kham
     public function getTTPK()
     {
-        $tenpk = ThongTinPhongKham::find(1);
-        $tenbs = ThongTinPhongKham::find(2);
-        $diachi = ThongTinPhongKham::find(3);
-        $sdt = ThongTinPhongKham::find(4);
-        return view('index.quydinh.thongtin',compact('tenpk','tenbs','diachi','sdt'));
+        $TenPK = ThongTinPhongKham::find(1);
+        $TenBS = ThongTinPhongKham::find(2);
+        $DiaChi = ThongTinPhongKham::find(3);
+        $SDT = ThongTinPhongKham::find(4);
+        return view('index.quydinh.thongtin',compact('TenPK','TenBS','DiaChi','SDT'));
     }
 
     public function postTTPK(Request $request)
@@ -79,20 +82,20 @@ class QuyDinhController extends Controller
                 ->withErrors($errors)
                 ->withInput();
         }
-        $tenpk = ThongTinPhongKham::find(1);
-        $tenbs = ThongTinPhongKham::find(2);
-        $diachi = ThongTinPhongKham::find(3);
-        $sdt = ThongTinPhongKham::find(4);
+        $TenPK = ThongTinPhongKham::find(1);
+        $TenBS = ThongTinPhongKham::find(2);
+        $DiaChi = ThongTinPhongKham::find(3);
+        $SDT = ThongTinPhongKham::find(4);
 
-        $tenpk->GiaTri = $request->tenpk;
-        $tenbs->GiaTri = $request->tenbs;
-        $diachi->GiaTri = $request->diachi;
-        $sdt->GiaTri = $request->sdt;
+        $TenPK->GiaTri = $request->tenpk;
+        $TenBS->GiaTri = $request->tenbs;
+        $DiaChi->GiaTri = $request->diachi;
+        $SDT->GiaTri = $request->sdt;
 
-        $tenpk->save();
-        $tenbs->save();
-        $diachi->save();
-        $sdt->save();
+        $TenPK->save();
+        $TenBS->save();
+        $DiaChi->save();
+        $SDT->save();
 
         return redirect()->route('ttpk.get')->with('success','Sửa thông tin phòng khám thành công');
     }

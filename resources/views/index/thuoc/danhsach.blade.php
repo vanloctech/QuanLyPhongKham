@@ -66,7 +66,7 @@
                        width="100%">
                     <thead>
                     <tr>
-                        {{--<th>#ID</th>--}}
+                        <th>#</th>
                         <th>Tên thuốc</th>
                         <th>Đơn giá</th>
                         <th>Đơn vị</th>
@@ -76,17 +76,21 @@
                     </thead>
 
                     <tbody>
-                    @foreach($dsthuoc as $thuoc)
+                    @foreach($dsThuoc as $i => $detail)
                         <tr>
-                            <td title="{{$thuoc->TenThuoc}}">{{$thuoc->TenThuoc}}</td>
-                            <td title="{{number_format($thuoc->DonGia)}} VND">{{number_format($thuoc->DonGia)}} VND</td>
-                            <td title="{{$thuoc->donvi->TenDonVi}}">{{$thuoc->donvi->TenDonVi}}</td>
-                            <td title="{{$thuoc->cachdung->CachDung}}">{{$thuoc->cachdung->CachDung}}</td>
+                            <td>{{$i + 1}}</td>
+                            <td title="{{$detail->TenThuoc}}">{{$detail->TenThuoc}}</td>
+                            <td title="{{number_format($detail->DonGia)}} VND">{{number_format($detail->DonGia)}}VND
+                            </td>
+                            <td title="{{$detail->donvi->TenDonVi}}">{{$detail->donvi->TenDonVi}}</td>
+                            <td title="{{$detail->cachdung->CachDung}}">{{$detail->cachdung->CachDung}}</td>
                             <td>
-                                <a href="{{route("sua-thuoc.get",[$thuoc->MaThuoc])}}" class="btn btn-icon waves-effect waves-light btn-warning" title="Sửa"> <i class="fa fa-wrench"></i></a>
+                                <a href="{{route("sua-thuoc.get",[$detail->MaThuoc])}}"
+                                   class="btn btn-icon waves-effect waves-light btn-warning" title="Sửa"> <i
+                                            class="fa fa-wrench"></i></a>
                                 &nbsp;
                                 &nbsp;
-                                <a onclick="del({{$thuoc->MaThuoc}})"
+                                <a onclick="del({{$detail->MaThuoc}})"
                                    class="btn btn-icon waves-effect waves-light btn-danger" title="Xóa"> <i
                                             class="fa fa-remove"></i></a>
                             </td>
@@ -134,18 +138,18 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#datatable-responsive').DataTable(
-                    {
-                        "columnDefs": [
-                            {
-                                "className": "text-center",
-                                "targets": [0, 1,2,3]
-                            }
-                        ],
+                {
+                    "columnDefs": [
+                        {
+                            "className": "text-center",
+                            "targets": [0, 1, 2, 3, 4]
+                        }
+                    ],
 //                        "paging":   false,
-                        "ordering": false,
+                    "ordering": false,
 //                        "info":     false,
-                        "bFilter": false
-                    }
+                    "bFilter": true
+                }
             );
         });
     </script>

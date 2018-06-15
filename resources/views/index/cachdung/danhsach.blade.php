@@ -53,7 +53,7 @@
                        width="100%">
                     <thead>
                     <tr>
-                        {{--<th>#ID</th>--}}
+                        <th>#</th>
                         <th>Ngày thêm</th>
                         <th>Cách dùng</th>
                         <th>Hành động</th>
@@ -61,15 +61,18 @@
                     </thead>
 
                     <tbody>
-                    @foreach($dscachdung as $cd)
+                    @foreach($dsCachDung as $i => $detail)
                         <tr>
-                            <td title="{{($cd->created_at)->format('d/m/Y H:i:s')}}">{{($cd->created_at)->format('d/m/Y')}}</td>
-                            <td title="{{$cd->CachDung}}">{{$cd->CachDung}}</td>
+                            <td>{{$i + 1}}</td>
+                            <td title="{{($detail->created_at)->format('d/m/Y H:i:s')}}">{{($detail->created_at)->format('d/m/Y')}}</td>
+                            <td title="{{$detail->CachDung}}">{{$detail->CachDung}}</td>
                             <td>
-                                <a href="{{route('sua-cachdung.get',$cd->MaCachDung)}}" class="btn btn-icon waves-effect waves-light btn-warning" title="Sửa"> <i class="fa fa-wrench"></i></a>
+                                <a href="{{route('sua-cachdung.get',$detail->MaCachDung)}}"
+                                   class="btn btn-icon waves-effect waves-light btn-warning" title="Sửa"> <i
+                                            class="fa fa-wrench"></i></a>
                                 &nbsp;
                                 &nbsp;
-                                <a onclick="del({{$cd->MaCachDung}})"
+                                <a onclick="del({{$detail->MaCachDung}})"
                                    class="btn btn-icon waves-effect waves-light btn-danger" title="Xóa"> <i
                                             class="fa fa-remove"></i></a>
                             </td>
@@ -94,7 +97,8 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Cách dùng</label>
-                                    <input name="cachdung" type="text" class="form-control" value="{{old('cachdung')}}" placeholder="Nhập cách dùng..." required>
+                                    <input name="cachdung" type="text" class="form-control" value="{{old('cachdung')}}"
+                                           placeholder="Nhập cách dùng..." required>
                                 </div>
 
                                 <div class="form-group">
@@ -145,18 +149,18 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#datatable-responsive').DataTable(
-                    {
-                        "columnDefs": [
-                            {
-                                "className": "text-center",
-                                "targets": [0, 1]
-                            },
-                        ],
+                {
+                    "columnDefs": [
+                        {
+                            "className": "text-center",
+                            "targets": [0, 1, 2]
+                        }
+                    ],
 //                        "paging":   false,
-                        "ordering": false,
+                    "ordering": false,
 //                        "info":     false,
-                        "bFilter": false
-                    }
+                    "bFilter": false
+                }
             );
         });
     </script>

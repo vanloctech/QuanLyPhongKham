@@ -87,10 +87,10 @@
                                 <select class="selectpicker" data-style="btn-default btn-custom" id="loaibenh"
                                         name="loaibenh">
                                     <option value="">--- Chọn loại bệnh ---</option>
-                                    @foreach($dsloaibenh as $lb)
-                                        <option value="{{ $lb->MaLoaiBenh }}"
-                                                @if (old('loaibenh') == $lb->MaLoaiBenh) selected @endif>
-                                            {{ $lb->TenLoaiBenh }}
+                                    @foreach($dsLoaiBenh as $detail)
+                                        <option value="{{ $detail->MaLoaiBenh }}"
+                                                @if (old('loaibenh') == $detail->MaLoaiBenh) selected @endif>
+                                            {{ $detail->TenLoaiBenh }}
                                         </option>
                                     @endforeach
                                 </select>

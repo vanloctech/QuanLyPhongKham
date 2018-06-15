@@ -15,8 +15,8 @@ class DonViController extends Controller
 
     public function getDSDonVi()
     {
-        $dsdonvi = DonVi::all()->sortByDesc('created_at');
-        return view('index.donvi.danhsach', compact('dsdonvi'));
+        $dsDonVi = DonVi::all()->sortByDesc('created_at');
+        return view('index.donvi.danhsach', compact('dsDonVi'));
     }
 
     public function getThemDonVi()
@@ -41,36 +41,36 @@ class DonViController extends Controller
                 ->withErrors($errors)
                 ->withInput();
         }
-        $donvi = new DonVi();
-        $donvi->TenDonVi = $request->tendonvi;
-        $donvi->save();
-        return redirect()->route('ds-donvi.get')->with('success','Thêm đơn vị '.$donvi->TenDonVi.' thành công.');
+        $DonVi = new DonVi();
+        $DonVi->TenDonVi = $request->tendonvi;
+        $DonVi->save();
+        return redirect()->route('ds-donvi.get')->with('success','Thêm đơn vị '.$DonVi->TenDonVi.' thành công.');
     }
 
     public function getSuaDonVi($id)
     {
         $errors = new MessageBag();
-        $dem_donvi = DonVi::where('MaDonVi', $id)->count();
-        if ($dem_donvi < 1) {
+        $DemDonVi = DonVi::where('MaDonVi', $id)->count();
+        if ($DemDonVi < 1) {
             $errors->add('err', 'Đơn vị này không tồn tại.');
             return redirect()->route('ds-donvi.get')->withErrors($errors);
         }
         else {
-            $donvi = DonVi::find($id);
-            return view('index.donvi.sua', compact('donvi'));
+            $DonVi = DonVi::find($id);
+            return view('index.donvi.sua', compact('DonVi'));
         }
     }
 
     public function postSuaDonVi(Request $request,$id)
     {
         $errors = new MessageBag();
-        $dem_donvi = DonVi::where('MaDonVi', $id)->count();
-        if ($dem_donvi < 1) {
+        $DemDonVi = DonVi::where('MaDonVi', $id)->count();
+        if ($DemDonVi < 1) {
             $errors->add('err', 'Đơn vị này không tồn tại.');
             return redirect()->route('ds-donvi.get')->withErrors($errors);
         }
         else {
-            $donvi = DonVi::find($id);
+            $DonVi = DonVi::find($id);
             $messages = [
                 'tendonvi.required' => 'Chưa nhập tên đơn vị.',
                 'tendonvi.between' => 'Tên phải từ :min đến :max kí tự.',
@@ -90,8 +90,8 @@ class DonViController extends Controller
                     ->withErrors($errors)
                     ->withInput();
             }
-            $donvi->TenDonVi = $request->tendonvi;
-            $donvi->save();
+            $DonVi->TenDonVi = $request->tendonvi;
+            $DonVi->save();
             return redirect()->route('sua-donvi.get',[$id])->with('success','Sửa đơn vị thành công.');
         }
     }
@@ -99,19 +99,19 @@ class DonViController extends Controller
     public function getXoaDonVi($id)
     {
         $errors = new MessageBag();
-        $dem_donvi = DonVi::where('MaDonVi', $id)->count();
-        if ($dem_donvi == 0) {
+        $DemDonVi = DonVi::where('MaDonVi', $id)->count();
+        if ($DemDonVi == 0) {
             $errors->add('err', 'Đơn vị này không tồn tại.');
             return redirect()->route('ds-donvi.get')->withErrors($errors);
         }
         else {
-            $dem_donvi_dung = Thuoc::where('MaDonVi',$id)->count();
-            if ($dem_donvi_dung != 0) {
+            $DemDonViDaDung = Thuoc::where('MaDonVi',$id)->count();
+            if ($DemDonViDaDung != 0) {
                 $errors->add('err', 'Không thể xóa đơn vị này.');
                 return redirect()->route('ds-donvi.get')->withErrors($errors);
             }
-            $donvi = DonVi::find($id);
-            $donvi->delete();
+            $DonVi = DonVi::find($id);
+            $DonVi->delete();
             return redirect()->route('ds-donvi.get')->with('success','Xóa thành công.');
         }
     }

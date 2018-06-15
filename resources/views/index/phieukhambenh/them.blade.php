@@ -6,6 +6,14 @@
     <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
     <link href="assets/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet"/>
     <link href="assets/css/cssdate.css" rel="stylesheet" type="text/css">
+    <link href="assets/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/buttons.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/fixedHeader.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/responsive.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/scroller.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/dataTables.colVis.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/fixedColumns.dataTables.min.css" rel="stylesheet" type="text/css"/>
 @endsection
 @section('content')
     <div class="row">
@@ -24,14 +32,14 @@
         </div>
     </div>
 
-    @if (count($errors) > 0 || session('error') || $canhbao != "")
+    @if (count($errors) > 0 || session('error') || $CanhBao != "")
         <div class="alert alert-danger" role="alert">
             <strong>Cảnh báo!</strong><br>
             @foreach($errors->all() as $err)
                 {{$err}}<br/>
             @endforeach
             {{session('error')}}
-            {{$canhbao}}
+            {{$CanhBao}}
         </div>
     @endif
     @if (session('success'))
@@ -71,10 +79,10 @@
                 <div class="card-box">
                     <h4 class="m-t-0 header-title"><b>Thêm phiếu khám bệnh</b></h4>
                     <p class="text-muted m-b-10 font-13">
-                        <b>Hôm nay ({{date('d-m-Y')}}) đã khám <a style="color: red">{{$sobndakhamtrongngay}}</a> bệnh
+                        <b>Hôm nay ({{date('d-m-Y')}}) đã khám <a style="color: red">{{$SoBNDaKhamTrongNgay}}</a> bệnh
                             nhân</b><br/>
                         <b>Số bệnh nhân có thể khám còn lại là <a
-                                    style="color: red">{{$sobntoida - $sobndakhamtrongngay}}</a></b>
+                                    style="color: red">{{$SoBNToiDa - $SoBNDaKhamTrongNgay}}</a></b>
                     </p>
                     <p class="text-muted m-b-10 font-13">
                         <b>Bắt buộc</b> <code>Bệnh nhân</code> <code>Ngày khám</code> <code>Triệu chứng</code> <code>Chuẩn
@@ -89,22 +97,22 @@
                                     <select class="selectpicker" data-style="btn-default btn-custom" id="mabn"
                                             name="mabn">
                                         <option value="" selected>--- Chọn bệnh nhân ---</option>
-                                        @if ($benhnhan == "")
-                                            @foreach($dsbenhnhan as $bn)
-                                                <option value="{{$bn->MaBN}}"
-                                                        @if (old('mabn') == $bn->MaBN) selected @endif>
-                                                    {{$bn->HoTen}} &#160;-&#160; @if($bn->GioiTinh == 1)
-                                                        Nữ @elseif($bn->GioiTinh == 2) Nam @else Khác @endif
-                                                    &#160;-&#160; {{$bn->NamSinh}} &#160;-&#160; {{$bn->DiaChi}}
+                                        @if ($BenhNhan == "")
+                                            @foreach($dsBenhNhan as $detail)
+                                                <option value="{{$detail->MaBN}}"
+                                                        @if (old('mabn') == $detail->MaBN) selected @endif>
+                                                    {{$detail->HoTen}} &#160;-&#160; @if($detail->GioiTinh == 1)
+                                                        Nữ @elseif($detail->GioiTinh == 2) Nam @else Khác @endif
+                                                    &#160;-&#160; {{$detail->NamSinh}} &#160;-&#160; {{$detail->DiaChi}}
                                                 </option>
                                             @endforeach
                                         @else
-                                            @foreach($dsbenhnhan as $bn)
-                                                <option value="{{$bn->MaBN}}"
-                                                        @if (old('mabn',$benhnhan) == $bn->MaBN) selected @endif>
-                                                    {{$bn->HoTen}} &#160;-&#160; @if($bn->GioiTinh == 1)
-                                                        Nữ @elseif($bn->GioiTinh == 2) Nam @else Khác @endif
-                                                    &#160;-&#160; {{$bn->NamSinh}} &#160;-&#160; {{$bn->DiaChi}}
+                                            @foreach($dsBenhNhan as $detail)
+                                                <option value="{{$detail->MaBN}}"
+                                                        @if (old('mabn',$BenhNhan) == $detail->MaBN) selected @endif>
+                                                    {{$detail->HoTen}} &#160;-&#160; @if($detail->GioiTinh == 1)
+                                                        Nữ @elseif($detail->GioiTinh == 2) Nam @else Khác @endif
+                                                    &#160;-&#160; {{$detail->NamSinh}} &#160;-&#160; {{$detail->DiaChi}}
                                                 </option>
                                             @endforeach
                                         @endif
@@ -135,10 +143,10 @@
                                     <select class="selectpicker" data-style="btn-default btn-custom" id="loaibenh"
                                             name="loaibenh">
                                         <option value="">--- Chọn loại bệnh ---</option>
-                                        @foreach($dsloaibenh as $lb)
-                                            <option value="{{ $lb->MaLoaiBenh }}"
-                                                    @if (old('loaibenh') == $lb->MaLoaiBenh) selected @endif>
-                                                {{ $lb->TenLoaiBenh }}
+                                        @foreach($dsLoaiBenh as $detail)
+                                            <option value="{{ $detail->MaLoaiBenh }}"
+                                                    @if (old('loaibenh') == $detail->MaLoaiBenh) selected @endif>
+                                                {{ $detail->TenLoaiBenh }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -157,7 +165,7 @@
                     <h4 class="m-t-0 header-title"><b>Kê đơn thuốc</b></h4>
 
                     <div class="p-10">
-                        <table class="table table-striped table-bordered m-0">
+                        <table id="datatable-responsive" class="table table-striped table-bordered m-0" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th class="text-center">STT</th>
@@ -168,17 +176,17 @@
                             </tr>
                             </thead>
                             <tbody style="text-align: center">
-                            <?php $i = 0; ?>
-                            @foreach($dsthuoc as $thuoc)
+                            @foreach($dsThuoc as $i => $detail)
                                 <tr>
-                                    <td class="text-center">{{++$i}}</td>
-                                    <td class="text-center">{{$thuoc->TenThuoc}}</td>
+                                    <td class="text-center">{{$i + 1}}</td>
+                                    <td class="text-center">{{$detail->TenThuoc}}</td>
                                     <td class="text-center">
-                                        <input name="{{$thuoc->MaThuoc}}" type="number" class="form-control"
-                                               placeholder="Số lượng..." maxlength="4" value="{{old($thuoc->MaThuoc)}}">
+                                        <input name="{{$detail->MaThuoc}}" type="number" class="form-control"
+                                               placeholder="Số lượng..." maxlength="4"
+                                               value="{{old($detail->MaThuoc)}}">
                                     </td>
-                                    <td class="text-center">{{$thuoc->donvi->TenDonVi}}</td>
-                                    <td class="text-center">{{$thuoc->cachdung->CachDung}}</td>
+                                    <td class="text-center">{{$detail->donvi->TenDonVi}}</td>
+                                    <td class="text-center">{{$detail->cachdung->CachDung}}</td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -188,7 +196,7 @@
                     <div class="p-l-r-10 p-t-10">
                         <div class="form-group">
                             <button class="ladda-button btn btn-default" data-style="expand-right"
-                                    @if ($canhbao != "") disabled @endif>Lưu lại
+                                    @if ($CanhBao != "") disabled @endif>Lưu lại
                             </button>
                         </div>
                     </div>
@@ -198,6 +206,31 @@
     </form>
 @endsection
 @section('script-ori')
+    <script src="assets/plugins/datatables/dataTables.buttons.min.js"></script>
+    <script src="assets/plugins/datatables/buttons.bootstrap.min.js"></script>
+    <script src="assets/plugins/datatables/jszip.min.js"></script>
+    <script src="assets/plugins/datatables/vfs_fonts.js"></script>
+    <script src="assets/plugins/datatables/buttons.html5.min.js"></script>
+    <script src="assets/plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="assets/plugins/datatables/responsive.bootstrap.min.js"></script>
 @endsection
 @section('script')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datatable-responsive').DataTable(
+                {
+                    "columnDefs": [
+                        {
+                            "className": "text-center",
+                            "targets": [0, 1, 2, 3, 4]
+                        }
+                    ],
+//                        "paging":   false,
+                    "ordering": false,
+//                        "info":     false,
+                    "bFilter": true
+                }
+            );
+        });
+    </script>
 @endsection

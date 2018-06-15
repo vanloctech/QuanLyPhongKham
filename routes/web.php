@@ -148,8 +148,12 @@ Route::group(['prefix' => '/','middleware' => 'adminLogin'], function () {
     Route::group(['prefix' => 'baocaodoanhthu'], function () {
         //danhsach
         Route::get('/', 'BaoCaoDTController@getDSBaoCaoDT')->name('bcdt.get');
-        //them
+        //ajax
         Route::get('ajax', 'BaoCaoDTController@getAjaxBaoCaoDT')->name('ajax-bcdt.get');
+        //cronjob them
+        Route::get('cronjobthem', 'BaoCaoDTController@getThemBaoCaoDT')->name('cronjobthem-bcdt.get');
+        //cronjob sua
+//        Route::get('cronjobsua', 'BaoCaoDTController@getAjaxBaoCaoDT')->name('cronjobsua-bcdt.get');
     });
 
     //Bao cao su dung thuoc

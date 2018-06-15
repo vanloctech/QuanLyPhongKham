@@ -50,22 +50,22 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Tên phòng khám</label>
-                                    <input name="tenpk" type="text" class="form-control" value="{{old('tenpk',$tenpk->GiaTri)}}" placeholder="Nhập tên phòng khám...">
+                                    <input name="tenpk" type="text" class="form-control" value="{{old('tenpk',$TenPK->GiaTri)}}" placeholder="Nhập tên phòng khám...">
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label">Tên bác sĩ</label>
-                                    <input name="tenbs" type="text" class="form-control" value="{{old('tenbs',$tenbs->GiaTri)}}" placeholder="Nhập tên bác sĩ...">
+                                    <input name="tenbs" type="text" class="form-control" value="{{old('tenbs',$TenBS->GiaTri)}}" placeholder="Nhập tên bác sĩ...">
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label">Địa chỉ</label>
-                                    <input name="diachi" type="text" class="form-control" value="{{old('diachi',$diachi->GiaTri)}}" placeholder="Nhập địa chỉ...">
+                                    <input name="diachi" type="text" class="form-control" value="{{old('diachi',$DiaChi->GiaTri)}}" placeholder="Nhập địa chỉ...">
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label">Số điện thoại</label>
-                                    <input name="sdt" type="text" class="form-control" value="{{old('sdt',$sdt->GiaTri)}}" placeholder="Nhập số điện thoại...">
+                                    <input name="sdt" type="text" class="form-control" value="{{old('sdt',$SDT->GiaTri)}}" placeholder="Nhập số điện thoại...">
                                 </div>
 
                                 <div class="form-group">
