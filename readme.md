@@ -26,11 +26,11 @@ Quản lý phòng khám (phòng mạch tư) là đồ án môn "Nhập môn côn
 
 ## About Us
 
-GVHD: Đỗ Thị Thanh Tuyền
-Lộc Nguyễn - 16520678 - <a href="http://fb.com/vanloctech" target="_blank">fb.com/vanloctech</a>
-Cao Luyện - 16520713 - <a href="http://fb.com/luyen2k2" target="_blank">fb.com/luyen2k2</a>
-Phúc Nguyễn - 16520952 - <a href="http://fb.com/PhucNguyen.k11UIT" target="_blank">fb.com/PhucNguyen.k11UIT</a>
-Hồng Ánh - 16521489 - <a href="http://fb.com/honganhtd" target="_blank">fb.com/honganhtd</a><br/>
+- GVHD: Đỗ Thị Thanh Tuyền
+- Lộc Nguyễn - 16520678 - <a href="http://fb.com/vanloctech" target="_blank">fb.com/vanloctech</a>
+- Cao Luyện - 16520713 - <a href="http://fb.com/luyen2k2" target="_blank">fb.com/luyen2k2</a>
+- Phúc Nguyễn - 16520952 - <a href="http://fb.com/PhucNguyen.k11UIT" target="_blank">fb.com/PhucNguyen.k11UIT</a>
+- Hồng Ánh - 16521489 - <a href="http://fb.com/honganhtd" target="_blank">fb.com/honganhtd</a><br/>
 
 ## References
 
