@@ -14,7 +14,8 @@ class QuyDinhController extends Controller
     {
         $SoBNToiDa = ThamSo::where('ThamSo','SoBenhNhanToiDa')->first();
         $TienKham = ThamSo::where('ThamSo','TienKham')->first();
-        return view('index.quydinh.quydinh',compact('SoBNToiDa','TienKham'));
+        $MucCanhBaoThuoc = ThamSo::where('ThamSo','MucCanhBaoThuoc')->first();
+        return view('index.quydinh.quydinh',compact('SoBNToiDa','TienKham', 'MucCanhBaoThuoc'));
     }
 
     public function postQuyDinh(Request $request)
@@ -26,10 +27,14 @@ class QuyDinhController extends Controller
             'tienkham.require' => 'Chưa nhập tiền khám.',
             'tienkham.integer' => 'Tiền khám phải là số.',
             'tienkham.min' => 'Tiền khám không được âm.',
+            'muccanhbaothuoc.require' => 'Chưa nhập mức cảnh báo hết thuốc.',
+            'muccanhbaothuoc.integer' => 'Mức cảnh báo hết thuốc phải là số.',
+            'muccanhbaothuoc.min' => 'Mức cảnh báo hết thuốc không được âm.',
         ];
         $rules = [
             'sobntoida' => 'required|integer|min:0',
-            'tienkham' => 'required|integer|min:0'
+            'tienkham' => 'required|integer|min:0',
+            'muccanhbaothuoc' => 'required|integer|min:0'
         ];
         $errors = Validator::make($request->all(), $rules, $messages);
         if ($errors->fails()) {
@@ -40,12 +45,15 @@ class QuyDinhController extends Controller
         }
         $SoBNToiDa = ThamSo::where('ThamSo','SoBenhNhanToiDa')->first();
         $TienKham = ThamSo::where('ThamSo','TienKham')->first();
+        $MucCanhBaoThuoc = ThamSo::where('ThamSo','MucCanhBaoThuoc')->first();
 
         $SoBNToiDa->GiaTri = $request->sobntoida;
         $TienKham->GiaTri = $request->tienkham;
+        $MucCanhBaoThuoc->GiaTri = $request->muccanhbaothuoc;
 
         $SoBNToiDa->save();
         $TienKham->save();
+        $MucCanhBaoThuoc->save();
 
         return redirect()->route('quydinh.get')->with('success','Sửa quy định thành công');
 

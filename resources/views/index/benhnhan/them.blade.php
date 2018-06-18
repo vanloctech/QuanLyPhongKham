@@ -38,7 +38,7 @@
             <strong>Thành công!</strong>
             <button type="button" class="close" data-dismiss="alert">×</button>
             <br/>
-            {{session('success')}}
+            {!! session('success')!!}
         </div>
     @endif
 
@@ -61,7 +61,8 @@
             <div class="card-box">
                 <h4 class="m-t-0 header-title"><b>Thêm bệnh nhân</b></h4>
                 <p class="text-muted m-b-10 font-13">
-                    <b>Bắt buộc</b> <code>Họ & tên</code> <code>Giới tính</code> <code>Năm sinh</code> <code>Địa chỉ</code>
+                    <b>Bắt buộc</b> <code>Họ & tên</code> <code>Giới tính</code> <code>Năm sinh</code> <code>Địa
+                        chỉ</code>
                 </p>
                 <div class="row">
                     <div class="col-md-6">
@@ -93,7 +94,8 @@
                                             name="namsinh">
                                         <option value="">--- Chọn năm sinh ---</option>
                                         @for($i=2018;$i>=1920;$i--)
-                                                <option value="{{ $i }}" @if (old('namsinh') == $i) selected @endif>{{ $i }}</option>
+                                            <option value="{{ $i }}"
+                                                    @if (old('namsinh') == $i) selected @endif>{{ $i }}</option>
                                         @endfor
                                     </select>
                                 </div>

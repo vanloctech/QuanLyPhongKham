@@ -50,12 +50,12 @@ class BenhNhanController extends Controller
                 ->withInput();
         }
         $BenhNhan = new BenhNhan();
-        $BenhNhan->HoTen = $request->hoten;
+        $BenhNhan->HoTen =  $request->hoten;
         $BenhNhan->NamSinh = $request->namsinh;
         $BenhNhan->GioiTinh = $request->gioitinh;
         $BenhNhan->DiaChi = $request->diachi;
         $BenhNhan->save();
-        return redirect()->route('them-benhnhan.get')->with('success', 'Thêm bệnh nhân thành công.');
+        return redirect()->route('them-benhnhan.get')->with('success', "Thêm bệnh nhân thành công.<br/><a href='". route('them-phieukham.get', [$BenhNhan->MaBN]) . "'>Thêm phiếu khám bệnh cho bệnh nhân này</a>");
     }
 
     public function getSuaBenhNhan($id)
@@ -104,7 +104,7 @@ class BenhNhanController extends Controller
                     ->withInput();
             }
             $BenhNhan = BenhNhan::find($id);
-            $BenhNhan->HoTen = $request->hoten;
+            $BenhNhan->HoTen =  $request->hoten;
             $BenhNhan->NamSinh = $request->namsinh;
             $BenhNhan->GioiTinh = $request->gioitinh;
             $BenhNhan->DiaChi = $request->diachi;

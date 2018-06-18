@@ -194,7 +194,7 @@ class PhieuKhamController extends Controller
             $HoaDon->TienThuoc = $TienThuoc;
             $HoaDon->save();
 //            $this->ThemBaoCaoDT();
-            return redirect()->route('them-phieukham.get')->with('success', 'Thêm phiếu khám bệnh thành công');
+            return redirect()->route('them-phieukham.get')->with('success', "Thêm phiếu khám bệnh thành công<br/><a href='". route('ct-phieukham.get',[$PhieuKham->MaPKB]) ."'>Click vào đây để xem đơn thuốc</a>");
         }
     }
 

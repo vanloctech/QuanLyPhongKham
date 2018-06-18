@@ -42,7 +42,7 @@
             <div class="card-box">
                 <h4 class="m-t-0 header-title"><b>Quy định</b></h4>
                 <p class="text-muted m-b-10 font-13">
-                    <b>Bắt buộc</b> <code>Số bệnh nhân khám tối đa</code> <code>Tiền khám</code>
+                    <b>Bắt buộc</b> <code>Số bệnh nhân khám tối đa</code> <code>Tiền khám</code> <code>Mức cảnh báo hết thuốc</code>
                 </p>
                 <div class="row">
                     <div class="col-md-12">
@@ -59,6 +59,11 @@
                                 <div class="form-group">
                                     <label class="control-label">Tiền khám</label>
                                     <input name="tienkham" type="number" class="form-control" value="{{old('tienkham',$TienKham->GiaTri)}}" placeholder="Nhập tiền khám..." required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">Mức cảnh báo thuốc</label>
+                                    <input name="muccanhbaothuoc" type="number" class="form-control" value="{{old('mucanhbaothuoc',$MucCanhBaoThuoc->GiaTri)}}" placeholder="Nhập mức cảnh báo hết thuốc..." required>
                                 </div>
 
                                 <div class="form-group">

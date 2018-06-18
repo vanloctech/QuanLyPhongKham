@@ -47,7 +47,7 @@
             <strong>Thành công!</strong>
             <button type="button" class="close" data-dismiss="alert">×</button>
             <br/>
-            {{session('success')}}
+            {!! session('success')!!}
         </div>
     @endif
 
@@ -165,7 +165,8 @@
                     <h4 class="m-t-0 header-title"><b>Kê đơn thuốc</b></h4>
 
                     <div class="p-10">
-                        <table id="datatable-responsive" class="table table-striped table-bordered m-0" cellspacing="0" width="100%">
+                        <table id="datatable-responsive" class="table table-striped table-bordered m-0" cellspacing="0"
+                               width="100%">
                             <thead>
                             <tr>
                                 <th class="text-center">STT</th>
