@@ -1,7 +1,10 @@
 <p align="center"><img src="https://raw.githubusercontent.com/vanloctech/QuanLyPhongKham/master/public/favicon.ico" width="128" height="128"></p>
 
-<p align="center">
-Project by Subject "Introduction Software Technology"
+<p>
+  Project by Group 1Acer2HP1Dell
+</p>
+<p align="center">  
+Project for Subject "Introduction Software Technology"
 </p>
 
 ## About QuanLyPhongKham
@@ -48,4 +51,4 @@ Mọi đóng góp cải thiện phần mềm chúng tôi xin ghi nhận. Hãy gi
 
 ## License
 
-Copyright 2018 - QuanLyPhongKham by Group CNPM (UIT)
+Copyright 2018 - QuanLyPhongKham by Group 1Acer2HP1Dell (UIT)
