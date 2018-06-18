@@ -1,6 +1,6 @@
 <p align="center"><img src="https://raw.githubusercontent.com/vanloctech/QuanLyPhongKham/master/public/favicon.ico" width="128" height="128"></p>
 
-<p>
+<p align="center">
   Project by Group 1Acer2HP1Dell
 </p>
 <p align="center">  
