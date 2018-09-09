@@ -150,6 +150,8 @@ Route::group(['prefix' => '/','middleware' => 'adminLogin'], function () {
         Route::get('/', 'BaoCaoDTController@getDSBaoCaoDT')->name('bcdt.get');
         //ajax
         Route::get('ajax', 'BaoCaoDTController@getAjaxBaoCaoDT')->name('ajax-bcdt.get');
+
+        Route::get('ajaxdt', 'BaoCaoDTController@getAjaxTongDT')->name('ajax-bcdt-doanhthu.get');
         //cronjob them
         Route::get('cronjobthem', 'BaoCaoDTController@getThemBaoCaoDT')->name('cronjobthem-bcdt.get');
         //cronjob sua

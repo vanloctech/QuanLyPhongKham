@@ -49,7 +49,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card-box table-responsive">
-                <h4 class="m-t-0 header-title"><b>Báo cáo doanh sử dụng thuốc</b></h4>
+                <h4 class="m-t-0 header-title"><b>Báo cáo sử dụng thuốc</b></h4>
                 <div class="form-group date">
                     {{csrf_field()}}
                     <label>Tháng</label><br>

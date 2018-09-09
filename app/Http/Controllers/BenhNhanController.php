@@ -180,16 +180,16 @@ class BenhNhanController extends Controller
                     echo "<td>" . $detail->TrieuChung . "</td>";
                     echo "<td class='hidden-print'>
                                 <a href=\"" . route('them-phieukham.get', [$detail->MaBN]) . "\"
-                                   class=\"btn btn-icon waves-effect waves-light btn-success\" title=\"Thêm phiếu khám bệnh cho bệnh nhân này\"> Thêm PKB</a>
-                                &nbsp;            
-                                <a href=\"" . route('sua-phieukham.get', [$detail->MaPKB]) . "\"
-                                   class=\"btn btn-icon waves-effect waves-light btn-warning\" title=\"Sửa\"> <i
-                                            class=\"fa fa-wrench\"></i></a>
-                                &nbsp;
-                                &nbsp;
-                                <a onclick=\"del($detail->MaPKB)\"
-                                   class=\"btn btn-icon waves-effect waves-light btn-danger\" title=\"Xóa\"> <i
-                                            class=\"fa fa-remove\"></i></a></td>";
+                                   class=\"btn btn-icon waves-effect waves-light btn-success\" title=\"Thêm phiếu khám bệnh cho bệnh nhân này\"> Thêm PKB</a>";
+//                                &nbsp;
+//                                <a href=\"" . route('sua-phieukham.get', [$detail->MaPKB]) . "\"
+//                                   class=\"btn btn-icon waves-effect waves-light btn-warning\" title=\"Sửa\"> <i
+//                                            class=\"fa fa-wrench\"></i></a>
+//                                &nbsp;
+//                                &nbsp;
+//                                <a onclick=\"del($detail->MaPKB)\"
+//                                   class=\"btn btn-icon waves-effect waves-light btn-danger\" title=\"Xóa\"> <i
+//                                            class=\"fa fa-remove\"></i></a></td>";
                     echo "</tr>";
                 }
                 if ($i == 0) {

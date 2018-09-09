@@ -55,10 +55,11 @@
                     {{csrf_field()}}
                     <label class="hidden-print">Tháng</label><br>
                     <input class="input-small datepicker hasDatepicker" type="month" name="thang"
-                           onchange="getdsbaocao(this.value)" value="{{date("Y-m")}}">
+                           onchange="getdsbaocao(this.value); gettongdoanhthu(this.value);" value="{{date("Y-m")}}">
                 </div>
 
                 <div class="p-10">
+                    <h4 class="text-right" id="tongdoanhthu">Tổng doanh thu tháng: {{number_format($BCDT->TongDoanhThu)}} VND</h4>
                     <table class="table table-striped table-bordered m-0">
                         <thead>
                         <tr>
@@ -72,16 +73,17 @@
                         <tbody style="text-align: center" id="tbodydskhambenh">
                         <?php $i = 0; ?>
                         @if(isset($CTBCDT))
-                        @foreach($CTBCDT as $detail)
-                            <tr>
-                                <td>{{++$i}}</td>
-                                <td>{{$detail->Ngay<10?"0".$detail->Ngay:$detail->Ngay}}/{{$detail->baocaodoanhthu->ThangNam}}</td>
-                                <td>{{$detail->SoBenhNhan}}</td>
-                                <td>{{number_format($detail->DoanhThu)}} VND</td>
-                                <td>{{round(($detail->DoanhThu/$detail->baocaodoanhthu->TongDoanhThu)*100,2)}}%</td>
-                            </tr>
-                        @endforeach
-                            @else
+                            @foreach($CTBCDT as $detail)
+                                <tr>
+                                    <td>{{++$i}}</td>
+                                    <td>{{$detail->Ngay<10?"0".$detail->Ngay:$detail->Ngay}}
+                                        /{{$detail->baocaodoanhthu->ThangNam}}</td>
+                                    <td>{{$detail->SoBenhNhan}}</td>
+                                    <td>{{number_format($detail->DoanhThu)}} VND</td>
+                                    <td>{{round(($detail->DoanhThu/$detail->baocaodoanhthu->TongDoanhThu)*100,2)}}%</td>
+                                </tr>
+                            @endforeach
+                        @else
                             <tr>
                                 <td colspan="5">Không có dữ liệu</td>
                             </tr>
@@ -115,6 +117,18 @@
                 data: {"_token": token, "key": value},
                 success: function (data) {
                     $("#tbodydskhambenh").html(data);
+                }
+            });
+        }
+        function gettongdoanhthu(value) {
+            var token = $("input[name='_token']").val();
+            $.ajax({
+                url: "{{route('ajax-bcdt-doanhthu.get')}}",
+                type: "GET",
+                async: true,
+                data: {"_token": token, "key": value},
+                success: function (data) {
+                    $("#tongdoanhthu").html(data);
                 }
             });
         }

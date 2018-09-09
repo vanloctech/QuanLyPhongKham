@@ -151,6 +151,7 @@ class BaoCaoDTController extends Controller
             } else {
                 $BCDT = BaoCaoDoanhThu::where('ThangNam', $Month . "/" . $Year)->first();
                 $CTBCDT = ChiTietBCDT::where('MaBCDT', $BCDT->MaBCDT)->get();
+//                echo "<h4>Tổng doanh thu tháng: {{number_format($BCDT->TongDoanhThu)}} VND</h4>";
                 foreach ($CTBCDT as $detail) {
                     echo "<tr>";
                     echo "<td>" . ++$i . "</td>";
@@ -160,6 +161,22 @@ class BaoCaoDTController extends Controller
                     echo "<td>" . round(($detail->DoanhThu / $detail->baocaodoanhthu->TongDoanhThu) * 100, 2) . "%</td>";
                     echo "</tr>";
                 }
+            }
+        }
+    }
+
+    public function getAjaxTongDT(Request $request)
+    {
+        if ($request->ajax()) {
+            $Key = $request->key;
+            $Month = explode('-', $Key)[1];
+            $Year = explode('-', $Key)[0];
+            $DemBCDT = BaoCaoDoanhThu::where('ThangNam', $Month . "/" . $Year)->count();
+            if ($DemBCDT == 0) {
+                echo "Tổng doanh thu tháng: 0 VND";
+            } else {
+                $BCDT = BaoCaoDoanhThu::where('ThangNam', $Month . "/" . $Year)->first();
+                echo "Tổng doanh thu tháng: ".number_format($BCDT->TongDoanhThu)." VND";
             }
         }
     }
